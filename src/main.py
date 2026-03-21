@@ -10,6 +10,7 @@
 import sys
 import parseExpressao
 import executarExpressao
+import exibirResultados
 from utils import lerArquivo, resetJson
 
 def main(argv=None):
@@ -35,7 +36,8 @@ def main(argv=None):
             print(f"Linha {idx}: erro ao analisar: {e}")
             continue
     
-    executarExpressao.executarExpressao()
+    resultados = executarExpressao.executarExpressao()
+    exibirResultados.exibirResultados(resultados) 
 
 if __name__ == "__main__":
     resetJson() # Garantir que sempre começamos com um JSON vazio

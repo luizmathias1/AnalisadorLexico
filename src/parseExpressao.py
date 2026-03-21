@@ -18,12 +18,6 @@ CYAN = "\033[36m"
 WHITE = "\033[37m"
 erroText = f"{RED}Erro:"
 
-def printEstado(state_name, char, lista, index, color):
-    print(f"{color}[{state_name}] index={index} char={repr(char)} lista={repr(lista)}{RESET}")
-
-def printTokenConcluido(tokens):
-    print(f"{GREEN}lista concluida -> tokens: {tokens}{RESET}")
-
 # -- Execução principal --
 balance = 0 # Usado para fazer balanceamento de parênteses, incrementa para '(' e decrementa para ')'
 
@@ -31,7 +25,6 @@ balance = 0 # Usado para fazer balanceamento de parênteses, incrementa para '('
 qnt_operandos = 0 
 
 def parseExpressao(linha, line_number=None):
-    print(f'\n-- Processing line "{linha}"')
     global balance, qnt_operandos
     balance, qnt_operandos = 0, 0
 
@@ -62,7 +55,6 @@ def estadoInicial(char, lista, tokens, linha, index):
         except:
             return False
         
-    printEstado("estadoInicial", char, lista, index, BLUE)
     if char.isspace(): 
         return estadoInicial, ""
 
@@ -96,9 +88,7 @@ def estadoInicial(char, lista, tokens, linha, index):
 
     raise ValueError(f"{erroText} caractere desconhecido ou não esperado '{char}' na posição {index}{RESET}")
 
-def estadoNumero(char, lista, tokens, linha, index):
-    printEstado("estadoNumero", char, lista, index, CYAN)
-    # Enquanto recebemos numeros decimais, chamamos recursimente
+def estadoNumero(char, lista, tokens, linha, index):    # Enquanto recebemos numeros decimais, chamamos recursimente
     if char.isdigit():
         return estadoNumero, lista + char
 
@@ -119,8 +109,6 @@ def estadoNumero(char, lista, tokens, linha, index):
         
     # Salvar o número completo na lista de tokens, já que o próximo char não é mais parte do número
     tokens.append({"token": lista, "type": "number", "position": index - len(lista)})
-    printTokenConcluido(tokens)
-
     global qnt_operandos
     qnt_operandos += 1 # Números sao operandos
     
@@ -128,7 +116,6 @@ def estadoNumero(char, lista, tokens, linha, index):
     return estadoInicial(char, "", tokens, linha, index)
 
 def estadoComando(char, lista, tokens, linha, index):
-    printEstado("estadoComando", char, lista, index, MAGENTA)
     if lista.isalpha():
         # Enquanto letra, continua recursivamente
         if char.isalpha():
@@ -136,26 +123,22 @@ def estadoComando(char, lista, tokens, linha, index):
         else:
             # Caso nao seja mais letra, salvar o comando 
             tokens.append({"token": lista, "type": "command", "position": index - len(lista)})
-            printTokenConcluido(tokens)
             global qnt_operandos
             qnt_operandos += 1 # Comandos especiais e variáveis também são considerados operandos para os operadores
             return estadoInicial(char, "", tokens, linha, index)
 
 def estadoOperador(char, lista, tokens, linha, index):
-    printEstado("estadoOperador", char, lista, index, YELLOW)
     global qnt_operandos
 
     # Checar divisão inteira
     if lista == '/':
         if char == '/':
             tokens.append({"token": '//', "type": "operator", "position": index - 1})
-            printTokenConcluido(tokens)
             qnt_operandos -= 1
             return estadoInicial, ""
         else:
             # Caso não seja, salva divisao real
             tokens.append({"token": '/', "type": "operator", "position": index - 1})
-            printTokenConcluido(tokens)
             qnt_operandos -= 1
             return estadoInicial(char, "", tokens, linha, index)
 
@@ -167,7 +150,6 @@ def estadoOperador(char, lista, tokens, linha, index):
         # Demais operadores
         if char in "+-*^%":
             tokens.append({"token": char, "type": "operator", "position": index})
-            printTokenConcluido(tokens)
 
             # Operador consome 2 operandos e gera 1 resultado, então decrementa 1 do total de operandos
             qnt_operandos -= 1
@@ -185,7 +167,6 @@ def estadoParenteses(char, tokens, index):
     elif char == ')': balance -= 1
        
     tokens.append({"token": char, "type": "parenthesis", "position": index})
-    printTokenConcluido(tokens)
     return estadoInicial, ""
 
 def estadoFinal(tokens, linha, line_number=None):
@@ -193,7 +174,5 @@ def estadoFinal(tokens, linha, line_number=None):
     
     global balance
     if balance != 0: raise ValueError(f"{erroText} parênteses mal balanceados{RESET}")
-
-    print(f"{GREEN}Adicionando tokens ao JSON...{RESET}")
     addJson(linha, tokens, line_number)
     return tokens
