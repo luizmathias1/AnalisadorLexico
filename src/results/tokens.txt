@@ -1,0 +1,714 @@
+{
+  "entries": [
+    {
+      "line_number": 1,
+      "line": "((3.0 5.0 +) 2.0)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 1
+        },
+        {
+          "token": "3.0",
+          "type": "number",
+          "position": 2
+        },
+        {
+          "token": "5.0",
+          "type": "number",
+          "position": 6
+        },
+        {
+          "token": "+",
+          "type": "operator",
+          "position": 10
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 11
+        },
+        {
+          "token": "2.0",
+          "type": "number",
+          "position": 13
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 16
+        }
+      ],
+      "resultado": 8.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 2,
+      "line": "(3.0 (5.0 2.0 ) +)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "3.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 5
+        },
+        {
+          "token": "5.0",
+          "type": "number",
+          "position": 6
+        },
+        {
+          "token": "2.0",
+          "type": "number",
+          "position": 10
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 14
+        },
+        {
+          "token": "+",
+          "type": "operator",
+          "position": 16
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 17
+        }
+      ],
+      "resultado": 3.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 3,
+      "line": "(7.77 RESULTADO)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "7.77",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "RESULTADO",
+          "type": "command",
+          "position": 6
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 15
+        }
+      ],
+      "resultado": 7.77,
+      "memoria": "RESULTADO"
+    },
+    {
+      "line_number": 4,
+      "line": "(RESULTADO)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "RESULTADO",
+          "type": "command",
+          "position": 1
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 10
+        }
+      ],
+      "resultado": 7.77,
+      "memoria": ""
+    },
+    {
+      "line_number": 5,
+      "line": "((RESULTADO) 2.0 ^)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 1
+        },
+        {
+          "token": "RESULTADO",
+          "type": "command",
+          "position": 2
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 11
+        },
+        {
+          "token": "2.0",
+          "type": "number",
+          "position": 13
+        },
+        {
+          "token": "^",
+          "type": "operator",
+          "position": 17
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 18
+        }
+      ],
+      "resultado": 60.372899999999994,
+      "memoria": ""
+    },
+    {
+      "line_number": 6,
+      "line": "(((2.0 3.0 +) 4.0) (1 RES) -)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 1
+        },
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 2
+        },
+        {
+          "token": "2.0",
+          "type": "number",
+          "position": 3
+        },
+        {
+          "token": "3.0",
+          "type": "number",
+          "position": 7
+        },
+        {
+          "token": "+",
+          "type": "operator",
+          "position": 11
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 12
+        },
+        {
+          "token": "4.0",
+          "type": "number",
+          "position": 14
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 17
+        },
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 19
+        },
+        {
+          "token": "1",
+          "type": "number",
+          "position": 20
+        },
+        {
+          "token": "RES",
+          "type": "command",
+          "position": 22
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 25
+        },
+        {
+          "token": "-",
+          "type": "operator",
+          "position": 27
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 28
+        }
+      ],
+      "resultado": 5.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 7,
+      "line": "-3.14 2.0 4.0 ^ +",
+      "tokens": [
+        {
+          "token": "-3.14",
+          "type": "number",
+          "position": 0
+        },
+        {
+          "token": "2.0",
+          "type": "number",
+          "position": 6
+        },
+        {
+          "token": "4.0",
+          "type": "number",
+          "position": 10
+        },
+        {
+          "token": "^",
+          "type": "operator",
+          "position": 14
+        },
+        {
+          "token": "+",
+          "type": "operator",
+          "position": 16
+        }
+      ],
+      "resultado": 12.86,
+      "memoria": ""
+    },
+    {
+      "line_number": 8,
+      "line": "(100.0 (2.0 5.0 ^) //)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "100.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 7
+        },
+        {
+          "token": "2.0",
+          "type": "number",
+          "position": 8
+        },
+        {
+          "token": "5.0",
+          "type": "number",
+          "position": 12
+        },
+        {
+          "token": "^",
+          "type": "operator",
+          "position": 16
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 17
+        },
+        {
+          "token": "//",
+          "type": "operator",
+          "position": 19
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 21
+        }
+      ],
+      "resultado": 100.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 9,
+      "line": "(3.14 PI)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "3.14",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "PI",
+          "type": "command",
+          "position": 6
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 8
+        }
+      ],
+      "resultado": 3.14,
+      "memoria": "PI"
+    },
+    {
+      "line_number": 10,
+      "line": "(PI)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "PI",
+          "type": "command",
+          "position": 1
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 3
+        }
+      ],
+      "resultado": 3.14,
+      "memoria": ""
+    },
+    {
+      "line_number": 11,
+      "line": "((PI) (1 RES) )",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 1
+        },
+        {
+          "token": "PI",
+          "type": "command",
+          "position": 2
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 4
+        },
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 6
+        },
+        {
+          "token": "1",
+          "type": "number",
+          "position": 7
+        },
+        {
+          "token": "RES",
+          "type": "command",
+          "position": 9
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 12
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 14
+        }
+      ],
+      "resultado": 3.14,
+      "memoria": ""
+    },
+    {
+      "line_number": 12,
+      "line": "(0 RES) (2 RES) +",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "RES",
+          "type": "command",
+          "position": 3
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 6
+        },
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 8
+        },
+        {
+          "token": "2",
+          "type": "number",
+          "position": 9
+        },
+        {
+          "token": "RES",
+          "type": "command",
+          "position": 11
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 14
+        },
+        {
+          "token": "+",
+          "type": "operator",
+          "position": 16
+        }
+      ],
+      "resultado": 0.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 13,
+      "line": "((5.0 3.0 -) (2.0 4.0) %)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 1
+        },
+        {
+          "token": "5.0",
+          "type": "number",
+          "position": 2
+        },
+        {
+          "token": "3.0",
+          "type": "number",
+          "position": 6
+        },
+        {
+          "token": "-",
+          "type": "operator",
+          "position": 10
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 11
+        },
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 13
+        },
+        {
+          "token": "2.0",
+          "type": "number",
+          "position": 14
+        },
+        {
+          "token": "4.0",
+          "type": "number",
+          "position": 18
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 21
+        },
+        {
+          "token": "%",
+          "type": "operator",
+          "position": 23
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 24
+        }
+      ],
+      "resultado": 2.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 14,
+      "line": "((RESULTADO) (PI) *)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 1
+        },
+        {
+          "token": "RESULTADO",
+          "type": "command",
+          "position": 2
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 11
+        },
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 13
+        },
+        {
+          "token": "PI",
+          "type": "command",
+          "position": 14
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 16
+        },
+        {
+          "token": "*",
+          "type": "operator",
+          "position": 18
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 19
+        }
+      ],
+      "resultado": 7.77,
+      "memoria": ""
+    },
+    {
+      "line_number": 15,
+      "line": "((3.0 5.0 +) (2.0 4.0 -) /)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 1
+        },
+        {
+          "token": "3.0",
+          "type": "number",
+          "position": 2
+        },
+        {
+          "token": "5.0",
+          "type": "number",
+          "position": 6
+        },
+        {
+          "token": "+",
+          "type": "operator",
+          "position": 10
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 11
+        },
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 13
+        },
+        {
+          "token": "2.0",
+          "type": "number",
+          "position": 14
+        },
+        {
+          "token": "4.0",
+          "type": "number",
+          "position": 18
+        },
+        {
+          "token": "-",
+          "type": "operator",
+          "position": 22
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 23
+        },
+        {
+          "token": "/",
+          "type": "operator",
+          "position": 25
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 26
+        }
+      ],
+      "resultado": 8.0,
+      "memoria": ""
+    }
+  ]
+}

@@ -1,0 +1,846 @@
+{
+  "entries": [
+    {
+      "line_number": 1,
+      "line": "(2.0 2.0 +)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "2.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "2.0",
+          "type": "number",
+          "position": 5
+        },
+        {
+          "token": "+",
+          "type": "operator",
+          "position": 9
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 10
+        }
+      ],
+      "resultado": 4.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 2,
+      "line": "(10.0 -5.0 +)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "10.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "-5.0",
+          "type": "number",
+          "position": 6
+        },
+        {
+          "token": "+",
+          "type": "operator",
+          "position": 11
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 12
+        }
+      ],
+      "resultado": 5.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 3,
+      "line": "(4.0 5.0 *)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "4.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "5.0",
+          "type": "number",
+          "position": 5
+        },
+        {
+          "token": "*",
+          "type": "operator",
+          "position": 9
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 10
+        }
+      ],
+      "resultado": 20.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 4,
+      "line": "(20.0 4.0 /)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "20.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "4.0",
+          "type": "number",
+          "position": 6
+        },
+        {
+          "token": "/",
+          "type": "operator",
+          "position": 10
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 11
+        }
+      ],
+      "resultado": 5.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 5,
+      "line": "(10.0 3.0 //)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "10.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "3.0",
+          "type": "number",
+          "position": 6
+        },
+        {
+          "token": "//",
+          "type": "operator",
+          "position": 10
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 12
+        }
+      ],
+      "resultado": 3.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 6,
+      "line": "(10.0 3.0 %)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "10.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "3.0",
+          "type": "number",
+          "position": 6
+        },
+        {
+          "token": "%",
+          "type": "operator",
+          "position": 10
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 11
+        }
+      ],
+      "resultado": 1.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 7,
+      "line": "(2.0 3.0 ^)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "2.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "3.0",
+          "type": "number",
+          "position": 5
+        },
+        {
+          "token": "^",
+          "type": "operator",
+          "position": 9
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 10
+        }
+      ],
+      "resultado": 8.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 8,
+      "line": "(2.0 3.0 + 4.0 *)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "2.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "3.0",
+          "type": "number",
+          "position": 5
+        },
+        {
+          "token": "+",
+          "type": "operator",
+          "position": 9
+        },
+        {
+          "token": "4.0",
+          "type": "number",
+          "position": 11
+        },
+        {
+          "token": "*",
+          "type": "operator",
+          "position": 15
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 16
+        }
+      ],
+      "resultado": 20.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 9,
+      "line": "(10.0 2.0 3.0 * -)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "10.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "2.0",
+          "type": "number",
+          "position": 6
+        },
+        {
+          "token": "3.0",
+          "type": "number",
+          "position": 10
+        },
+        {
+          "token": "*",
+          "type": "operator",
+          "position": 14
+        },
+        {
+          "token": "-",
+          "type": "operator",
+          "position": 16
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 17
+        }
+      ],
+      "resultado": 4.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 10,
+      "line": "(2.0 3.0 ^ 4.0 5.0 + *)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "2.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "3.0",
+          "type": "number",
+          "position": 5
+        },
+        {
+          "token": "^",
+          "type": "operator",
+          "position": 9
+        },
+        {
+          "token": "4.0",
+          "type": "number",
+          "position": 11
+        },
+        {
+          "token": "5.0",
+          "type": "number",
+          "position": 15
+        },
+        {
+          "token": "+",
+          "type": "operator",
+          "position": 19
+        },
+        {
+          "token": "*",
+          "type": "operator",
+          "position": 21
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 22
+        }
+      ],
+      "resultado": 72.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 11,
+      "line": "(42.0 VARA)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "42.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "VARA",
+          "type": "command",
+          "position": 6
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 10
+        }
+      ],
+      "resultado": 42.0,
+      "memoria": "VARA"
+    },
+    {
+      "line_number": 12,
+      "line": "(VARA 8.0 +)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "VARA",
+          "type": "command",
+          "position": 1
+        },
+        {
+          "token": "8.0",
+          "type": "number",
+          "position": 6
+        },
+        {
+          "token": "+",
+          "type": "operator",
+          "position": 10
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 11
+        }
+      ],
+      "resultado": 50.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 13,
+      "line": "(10.0 TESTE)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "10.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "TESTE",
+          "type": "command",
+          "position": 6
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 11
+        }
+      ],
+      "resultado": 10.0,
+      "memoria": "TESTE"
+    },
+    {
+      "line_number": 14,
+      "line": "(VARA TESTE +)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "VARA",
+          "type": "command",
+          "position": 1
+        },
+        {
+          "token": "TESTE",
+          "type": "command",
+          "position": 6
+        },
+        {
+          "token": "+",
+          "type": "operator",
+          "position": 12
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 13
+        }
+      ],
+      "resultado": 52.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 15,
+      "line": "(1 RES)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "1",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "RES",
+          "type": "command",
+          "position": 3
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 6
+        }
+      ],
+      "resultado": 52.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 16,
+      "line": "(2 RES)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "2",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "RES",
+          "type": "command",
+          "position": 3
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 6
+        }
+      ],
+      "resultado": 52.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 17,
+      "line": "((2 RES) (1 RES) +)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 1
+        },
+        {
+          "token": "2",
+          "type": "number",
+          "position": 2
+        },
+        {
+          "token": "RES",
+          "type": "command",
+          "position": 4
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 7
+        },
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 9
+        },
+        {
+          "token": "1",
+          "type": "number",
+          "position": 10
+        },
+        {
+          "token": "RES",
+          "type": "command",
+          "position": 12
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 15
+        },
+        {
+          "token": "+",
+          "type": "operator",
+          "position": 17
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 18
+        }
+      ],
+      "resultado": 52.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 18,
+      "line": "(100.0 FINAL)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "100.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "FINAL",
+          "type": "command",
+          "position": 7
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 12
+        }
+      ],
+      "resultado": 100.0,
+      "memoria": "FINAL"
+    },
+    {
+      "line_number": 19,
+      "line": "(FINAL (1 RES) *)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "FINAL",
+          "type": "command",
+          "position": 1
+        },
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 7
+        },
+        {
+          "token": "1",
+          "type": "number",
+          "position": 8
+        },
+        {
+          "token": "RES",
+          "type": "command",
+          "position": 10
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 13
+        },
+        {
+          "token": "*",
+          "type": "operator",
+          "position": 15
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 16
+        }
+      ],
+      "resultado": 100.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 20,
+      "line": "(VARA)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "VARA",
+          "type": "command",
+          "position": 1
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 5
+        }
+      ],
+      "resultado": 42.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 23,
+      "line": "(1.0 0.0 /)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "1.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "0.0",
+          "type": "number",
+          "position": 5
+        },
+        {
+          "token": "/",
+          "type": "operator",
+          "position": 9
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 10
+        }
+      ],
+      "resultado": Infinity,
+      "memoria": ""
+    },
+    {
+      "line_number": 24,
+      "line": "(1.0 0.0 //)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "1.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "0.0",
+          "type": "number",
+          "position": 5
+        },
+        {
+          "token": "//",
+          "type": "operator",
+          "position": 9
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 11
+        }
+      ],
+      "resultado": Infinity,
+      "memoria": ""
+    },
+    {
+      "line_number": 25,
+      "line": "(0.0 0.0 /)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "0.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "0.0",
+          "type": "number",
+          "position": 5
+        },
+        {
+          "token": "/",
+          "type": "operator",
+          "position": 9
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 10
+        }
+      ],
+      "resultado": NaN,
+      "memoria": ""
+    },
+    {
+      "line_number": 26,
+      "line": "(1.0 0.0 %)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "1.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "0.0",
+          "type": "number",
+          "position": 5
+        },
+        {
+          "token": "%",
+          "type": "operator",
+          "position": 9
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 10
+        }
+      ],
+      "resultado": Infinity,
+      "memoria": ""
+    }
+  ]
+}
