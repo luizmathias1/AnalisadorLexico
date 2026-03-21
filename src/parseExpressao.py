@@ -18,6 +18,9 @@ CYAN = "\033[36m"
 WHITE = "\033[37m"
 erroText = f"{RED}Erro:"
 
+# -- Execução principal --
+balance = 0 # Usado para fazer balanceamento de parênteses, incrementa para '(' e decrementa para ')'
+
 def printEstado(state_name, char, lista, index, color):
     print(f"{color}[{state_name}] index={index} char={repr(char)} lista={repr(lista)}{RESET}")
 
@@ -92,8 +95,24 @@ def estadoOperador(char, lista, tokens, linha, index):
     print('estadoOperador', char, lista, index)
 
 def estadoParenteses(char, tokens, index):
-    print('estadoParenteses', char, index)
+    if len(tokens) == 0 and char == ')':
+        raise ValueError(f"{erroText} parêntese de fechamento ')' no inicio da linha{RESET}")
+
+    global balance
+    if char == '(': balance += 1
+    elif char == ')': balance -= 1
+       
+    tokens.append({"token": char, "type": "parenthesis", "position": index})
+    printTokenConcluido(tokens)
+    return estadoInicial, ""
 
 def estadoFinal(tokens, linha, line_number=None):
+    if not tokens: raise ValueError(f"{erroText} expressão vazia ou malformada, nenhum tokeIn reconhecido{RESET}")
+    
+    global balance
+    if balance != 0: raise ValueError(f"{erroText} parênteses mal balanceados{RESET}")
+
+    print(f"{GREEN}Adicionando tokens ao JSON...{RESET}")
+
     addJson(linha, tokens, line_number)
     return tokens
