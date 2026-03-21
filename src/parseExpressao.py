@@ -21,6 +21,9 @@ erroText = f"{RED}Erro:"
 # -- Execução principal --
 balance = 0 # Usado para fazer balanceamento de parênteses, incrementa para '(' e decrementa para ')'
 
+# Validar se operadores tem operandos suficientes, caso ((3 4 +) (2 1 -) *), cada resultado se torna um operando para *
+qnt_operandos = 0 
+
 def printEstado(state_name, char, lista, index, color):
     print(f"{color}[{state_name}] index={index} char={repr(char)} lista={repr(lista)}{RESET}")
 
@@ -86,7 +89,35 @@ def estadoInicial(char, lista, tokens, linha, index):
     raise ValueError(f"{erroText} caractere desconhecido ou não esperado '{char}' na posição {index}{RESET}")
 
 def estadoNumero(char, lista, tokens, linha, index):
-    print('estadoNumero', char, lista, index)
+    printEstado("estadoNumero", char, lista, index, CYAN)
+    # Enquanto recebemos numeros decimais, chamamos recursimente
+    if char.isdigit():
+        return estadoNumero, lista + char
+
+    # checar se é dois pontos seguidos, se não for chama a função recursivamente
+    if char == '.':
+        if '.' in lista:
+            raise ValueError(f"{erroText} número malformado na posição {index} gerou múltiplos pontos inválidos (ex: {lista + char}){RESET}")
+        else:
+            return estadoNumero, lista + char
+    
+    # Caso receba uma letra, identifica que é um comando
+    if char.isalpha():
+        return estadoComando, lista + char
+
+    # Verificação de segurança: evita salvar lixo como número
+    if lista == '-' or lista == '.':
+        raise ValueError(f"{erroText} sequência inválida tentando formar número falhou, sobrando apenas um: '{lista}'{RESET}")
+        
+    # Salvar o número completo na lista de tokens, já que o próximo char não é mais parte do número
+    tokens.append({"token": lista, "type": "number", "position": index - len(lista)})
+    printTokenConcluido(tokens)
+
+    global qnt_operandos
+    qnt_operandos += 1 # Números sao operandos
+    
+    # Repassa o caractere atual pro estado inicial, assim comecando uma nova lista
+    return estadoInicial(char, "", tokens, linha, index)
 
 def estadoComando(char, lista, tokens, linha, index):
     print('estadoComando', char, lista, index)
