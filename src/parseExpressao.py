@@ -120,7 +120,18 @@ def estadoNumero(char, lista, tokens, linha, index):
     return estadoInicial(char, "", tokens, linha, index)
 
 def estadoComando(char, lista, tokens, linha, index):
-    print('estadoComando', char, lista, index)
+    printEstado("estadoComando", char, lista, index, MAGENTA)
+    if lista.isalpha():
+        # Enquanto letra, continua recursivamente
+        if char.isalpha():
+            return estadoComando, lista + char
+        else:
+            # Caso nao seja mais letra, salvar o comando 
+            tokens.append({"token": lista, "type": "command", "position": index - len(lista)})
+            printTokenConcluido(tokens)
+            global qnt_operandos
+            qnt_operandos += 1 # Comandos especiais e variáveis também são considerados operandos para os operadores
+            return estadoInicial(char, "", tokens, linha, index)
     
 def estadoOperador(char, lista, tokens, linha, index):
     print('estadoOperador', char, lista, index)
