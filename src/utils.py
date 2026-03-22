@@ -4,8 +4,6 @@ import os
 def lerArquivo(arquivo):
     with open(arquivo, 'r') as f:
         linhas = f.readlines()
-    
-    print(f"Arquivo '{arquivo}' lido com sucesso. Total de linhas: {len(linhas)}")
 
     formatado = []
     for linha in linhas:

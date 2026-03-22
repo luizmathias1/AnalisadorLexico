@@ -78,7 +78,6 @@ def executarExpressao():
 
         if pilha:
             res_final = pilha.pop()
-            print(f"Expressão: {linha['line']} -> Resultado: {res_final}")
             resultados.append({"resultado": res_final, "memoria": memoria})
             linha["resultado"] = res_final
             linha["memoria"] = memoria
@@ -90,3 +89,5 @@ def executarExpressao():
     output_path = os.path.join("results", "tokens.txt")
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump({"entries": tokensObjs}, f, indent=2)
+
+    return tokensObjs
