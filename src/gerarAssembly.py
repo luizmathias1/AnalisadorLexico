@@ -1,6 +1,67 @@
 import os
 from utils import ler_json
 
+def mostrarDisplay(instrucoes, reg_esq):
+    instrucoes.append(f"\n    // Converte float para inteiro")
+    instrucoes.append(f"    VCVTR.S32.F32 s{reg_esq}, s{reg_esq}")
+    instrucoes.append(f"    VMOV r0, s{reg_esq}")
+
+    instrucoes.append(f"\n    // Extrai dígitos via VFP")
+    instrucoes.append(f"    VMOV s20, r0")
+    instrucoes.append(f"    VCVT.F32.S32 s20, s20")
+    instrucoes.append(f"    LDR r1, =const_10")
+    instrucoes.append(f"    VLDR s21, [r1]")
+    instrucoes.append(f"    LDR r3, =seg7_table")
+
+    instrucoes.append(f"\n    // Unidade")
+    instrucoes.append(f"    VDIV.F32 s22, s20, s21")
+    instrucoes.append(f"    VCVT.S32.F32 s22, s22")
+    instrucoes.append(f"    VCVT.F32.S32 s23, s22")
+    instrucoes.append(f"    VMUL.F32 s24, s23, s21")
+    instrucoes.append(f"    VSUB.F32 s24, s20, s24")
+    instrucoes.append(f"    VCVT.S32.F32 s24, s24")
+    instrucoes.append(f"    VMOV r2, s24")
+    instrucoes.append(f"    LDR r2, [r3, r2, LSL #2]")
+
+    instrucoes.append(f"\n    // Dezena")
+    instrucoes.append(f"    VDIV.F32 s22, s23, s21")
+    instrucoes.append(f"    VCVT.S32.F32 s22, s22")
+    instrucoes.append(f"    VCVT.F32.S32 s25, s22")
+    instrucoes.append(f"    VMUL.F32 s24, s25, s21")
+    instrucoes.append(f"    VSUB.F32 s24, s23, s24")
+    instrucoes.append(f"    VCVT.S32.F32 s24, s24")
+    instrucoes.append(f"    VMOV r6, s24")
+    instrucoes.append(f"    LDR r6, [r3, r6, LSL #2]")
+
+    instrucoes.append(f"\n    // Centena")
+    instrucoes.append(f"    VDIV.F32 s22, s25, s21")
+    instrucoes.append(f"    VCVT.S32.F32 s22, s22")
+    instrucoes.append(f"    VCVT.F32.S32 s26, s22")
+    instrucoes.append(f"    VMUL.F32 s24, s26, s21")
+    instrucoes.append(f"    VSUB.F32 s24, s25, s24")
+    instrucoes.append(f"    VCVT.S32.F32 s24, s24")
+    instrucoes.append(f"    VMOV r7, s24")
+    instrucoes.append(f"    LDR r7, [r3, r7, LSL #2]")
+
+    instrucoes.append(f"\n    // Milhar")
+    instrucoes.append(f"    VDIV.F32 s22, s26, s21")
+    instrucoes.append(f"    VCVT.S32.F32 s22, s22")
+    instrucoes.append(f"    VCVT.F32.S32 s27, s22")
+    instrucoes.append(f"    VMUL.F32 s24, s27, s21")
+    instrucoes.append(f"    VSUB.F32 s24, s26, s24")
+    instrucoes.append(f"    VCVT.S32.F32 s24, s24")
+    instrucoes.append(f"    VMOV r1, s24")
+    instrucoes.append(f"    LDR r1, [r3, r1, LSL #2]")
+
+    instrucoes.append(f"\n    // Empacota HEX3:HEX2:HEX1:HEX0")
+    instrucoes.append(f"    ORR r0, r2, r6, LSL #8")
+    instrucoes.append(f"    ORR r0, r0, r7, LSL #16")
+    instrucoes.append(f"    ORR r0, r0, r1, LSL #24")
+
+    instrucoes.append(f"\n    // Escreve nos displays")
+    instrucoes.append(f"    LDR r1, =0xFF200020")
+    instrucoes.append(f"    STR r0, [r1]")
+
 def gerarAssembly():
     data = ler_json()
 
@@ -90,17 +151,7 @@ def gerarAssembly():
                     # Desempilha 1 registrador (o resultado fica em reg_esq)
                     contador_reg -= 1
 
-                    instrucoes.append(f"\n    // Converte float para inteiro")
-                    instrucoes.append(f"    VCVT.S32.F32 s{reg_esq}, s{reg_esq}")
-                    instrucoes.append(f"    VMOV r0, s{reg_esq}")          # r0 = resultado inteiro
-
-                    instrucoes.append(f"\n    // Lookup 7 segmentos: r0 = seg7_table[r0]")
-                    instrucoes.append(f"    LDR r1, =seg7_table")
-                    instrucoes.append(f"    LDR r0, [r1, r0, LSL #2]")     # cada entry ocupa 4 bytes
-
-                    instrucoes.append(f"\n    // Escreve no HEX0 (display mais à direita)")
-                    instrucoes.append(f"    LDR r1, =0xFF200020")
-                    instrucoes.append(f"    STR r0, [r1]")
+                    mostrarDisplay(instrucoes, reg_esq)
 
             elif tipo == 'parenthesis':
                 # Parênteses não geram código
@@ -115,7 +166,11 @@ def gerarAssembly():
         for label, val in literais:
             instrucoes.append(f"{label}:")
             instrucoes.append(f"    .float {val}")
+            
     
+    instrucoes.append("\nconst_10:")
+    instrucoes.append("    .float 10.0")
+
     instrucoes.append("\nseg7_table:")
     instrucoes.append("    .word 0x3F  // 0")
     instrucoes.append("    .word 0x06  // 1")
