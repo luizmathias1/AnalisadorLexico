@@ -194,18 +194,18 @@ def gerarAssembly():
                 if valor == 'RES': 
                     gerarRes(instrucoes, contador_reg, linha_idx, literais)
                 else :
+                    var_label = f"{var_label}"
+                    if(f'{var_label}' not in memorias): memorias.append(var_label)
                     if ultimo_token_numero and contador_reg >= 1:
                         # Se houver um número antes, armazenamos em MEM
                         reg_top = contador_reg - 1
-                        if(f'{valor}_var' not in memorias): memorias.append(f"{valor}_var")
                         instrucoes.append(f"\n// -- Comando: Salva em ({valor}) --")
-                        instrucoes.append(f"    LDR r1, ={valor}_var")
+                        instrucoes.append(f"    LDR r1, ={var_label}")
                         instrucoes.append(f"    VSTR s{reg_top}, [r1]")
                     else:
                         # Caso contrário, carrega valor (se não foi inicializada, inicialmente é 0.0)
-                        if(f'{valor}_var' not in memorias): memorias.append(f"{valor}_var")
                         instrucoes.append(f"\n// -- Comando: Carrega de ({valor}) --")
-                        instrucoes.append(f"    LDR r1, ={valor}_var")
+                        instrucoes.append(f"    LDR r1, ={var_label}")
                         instrucoes.append(f"    VLDR s{contador_reg}, [r1]")
                         contador_reg += 1
 
