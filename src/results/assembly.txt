@@ -14,13 +14,16 @@ main:
     MOV r0, #0x40000000
     VMSR FPEXC, r0
 
-    // Carrega 20.0
+    // Carrega 3.0
     LDR r0, =num_0
     VLDR s0, [r0]
 
-// -- Comando: Salva em (MEMCORRETO) --
-    LDR r1, =MEMCORRETO_var
-    VSTR s0, [r1]
+    // Carrega 5.0
+    LDR r0, =num_1
+    VLDR s1, [r0]
+
+// -- Operação: + --
+    VADD.F32 s0, s0, s1
 
     // Salva o resultado da expressão da linha 0 no res_array
     LDR r1, =res_array
@@ -89,16 +92,1284 @@ main:
     // Escreve nos displays
     LDR r1, =0xFF200020
     STR r0, [r1]
+
+    // Carrega 10.0
+    LDR r0, =num_2
+    VLDR s0, [r0]
+
+    // Carrega 4.0
+    LDR r0, =num_3
+    VLDR s1, [r0]
+
+// -- Operação: - --
+    VSUB.F32 s0, s0, s1
+
+    // Salva o resultado da expressão da linha 1 no res_array
+    LDR r1, =res_array
+    LDR r2, =1
+    ADD r1, r1, r2, LSL #2
+    VSTR s0, [r1]
+
+// -- Mostrar resultado no display --
+
+    // Converte float para inteiro
+    VCVTR.S32.F32 s0, s0
+    VMOV r0, s0
+
+    // Extrai dígitos via VFP
+    VMOV s20, r0
+    VCVT.F32.S32 s20, s20
+    LDR r1, =const_10
+    VLDR s21, [r1]
+    LDR r3, =seg7_table
+
+    // Unidade
+    VDIV.F32 s22, s20, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s23, s22
+    VMUL.F32 s24, s23, s21
+    VSUB.F32 s24, s20, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r2, s24
+    LDR r2, [r3, r2, LSL #2]
+
+    // Dezena
+    VDIV.F32 s22, s23, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s25, s22
+    VMUL.F32 s24, s25, s21
+    VSUB.F32 s24, s23, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r6, s24
+    LDR r6, [r3, r6, LSL #2]
+
+    // Centena
+    VDIV.F32 s22, s25, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s26, s22
+    VMUL.F32 s24, s26, s21
+    VSUB.F32 s24, s25, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r7, s24
+    LDR r7, [r3, r7, LSL #2]
+
+    // Milhar
+    VDIV.F32 s22, s26, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s27, s22
+    VMUL.F32 s24, s27, s21
+    VSUB.F32 s24, s26, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r1, s24
+    LDR r1, [r3, r1, LSL #2]
+
+    // Empacota HEX3:HEX2:HEX1:HEX0
+    ORR r0, r2, r6, LSL #8
+    ORR r0, r0, r7, LSL #16
+    ORR r0, r0, r1, LSL #24
+
+    // Escreve nos displays
+    LDR r1, =0xFF200020
+    STR r0, [r1]
+
+    // Carrega 6.0
+    LDR r0, =num_4
+    VLDR s0, [r0]
+
+    // Carrega 7.0
+    LDR r0, =num_5
+    VLDR s1, [r0]
+
+// -- Operação: * --
+    VMUL.F32 s0, s0, s1
+
+    // Salva o resultado da expressão da linha 2 no res_array
+    LDR r1, =res_array
+    LDR r2, =2
+    ADD r1, r1, r2, LSL #2
+    VSTR s0, [r1]
+
+// -- Mostrar resultado no display --
+
+    // Converte float para inteiro
+    VCVTR.S32.F32 s0, s0
+    VMOV r0, s0
+
+    // Extrai dígitos via VFP
+    VMOV s20, r0
+    VCVT.F32.S32 s20, s20
+    LDR r1, =const_10
+    VLDR s21, [r1]
+    LDR r3, =seg7_table
+
+    // Unidade
+    VDIV.F32 s22, s20, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s23, s22
+    VMUL.F32 s24, s23, s21
+    VSUB.F32 s24, s20, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r2, s24
+    LDR r2, [r3, r2, LSL #2]
+
+    // Dezena
+    VDIV.F32 s22, s23, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s25, s22
+    VMUL.F32 s24, s25, s21
+    VSUB.F32 s24, s23, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r6, s24
+    LDR r6, [r3, r6, LSL #2]
+
+    // Centena
+    VDIV.F32 s22, s25, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s26, s22
+    VMUL.F32 s24, s26, s21
+    VSUB.F32 s24, s25, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r7, s24
+    LDR r7, [r3, r7, LSL #2]
+
+    // Milhar
+    VDIV.F32 s22, s26, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s27, s22
+    VMUL.F32 s24, s27, s21
+    VSUB.F32 s24, s26, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r1, s24
+    LDR r1, [r3, r1, LSL #2]
+
+    // Empacota HEX3:HEX2:HEX1:HEX0
+    ORR r0, r2, r6, LSL #8
+    ORR r0, r0, r7, LSL #16
+    ORR r0, r0, r1, LSL #24
+
+    // Escreve nos displays
+    LDR r1, =0xFF200020
+    STR r0, [r1]
+
+    // Carrega 15.0
+    LDR r0, =num_6
+    VLDR s0, [r0]
+
+    // Carrega 3.0
+    LDR r0, =num_7
+    VLDR s1, [r0]
+
+// -- Operação: / --
+    VDIV.F32 s0, s0, s1
+
+    // Salva o resultado da expressão da linha 3 no res_array
+    LDR r1, =res_array
+    LDR r2, =3
+    ADD r1, r1, r2, LSL #2
+    VSTR s0, [r1]
+
+// -- Mostrar resultado no display --
+
+    // Converte float para inteiro
+    VCVTR.S32.F32 s0, s0
+    VMOV r0, s0
+
+    // Extrai dígitos via VFP
+    VMOV s20, r0
+    VCVT.F32.S32 s20, s20
+    LDR r1, =const_10
+    VLDR s21, [r1]
+    LDR r3, =seg7_table
+
+    // Unidade
+    VDIV.F32 s22, s20, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s23, s22
+    VMUL.F32 s24, s23, s21
+    VSUB.F32 s24, s20, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r2, s24
+    LDR r2, [r3, r2, LSL #2]
+
+    // Dezena
+    VDIV.F32 s22, s23, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s25, s22
+    VMUL.F32 s24, s25, s21
+    VSUB.F32 s24, s23, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r6, s24
+    LDR r6, [r3, r6, LSL #2]
+
+    // Centena
+    VDIV.F32 s22, s25, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s26, s22
+    VMUL.F32 s24, s26, s21
+    VSUB.F32 s24, s25, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r7, s24
+    LDR r7, [r3, r7, LSL #2]
+
+    // Milhar
+    VDIV.F32 s22, s26, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s27, s22
+    VMUL.F32 s24, s27, s21
+    VSUB.F32 s24, s26, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r1, s24
+    LDR r1, [r3, r1, LSL #2]
+
+    // Empacota HEX3:HEX2:HEX1:HEX0
+    ORR r0, r2, r6, LSL #8
+    ORR r0, r0, r7, LSL #16
+    ORR r0, r0, r1, LSL #24
+
+    // Escreve nos displays
+    LDR r1, =0xFF200020
+    STR r0, [r1]
+
+    // Carrega 17.0
+    LDR r0, =num_8
+    VLDR s0, [r0]
+
+    // Carrega 5.0
+    LDR r0, =num_9
+    VLDR s1, [r0]
+
+// -- Operação: % --
+    VDIV.F32 s2, s0, s1
+    VCVT.S32.F32 s2, s2
+    VCVT.F32.S32 s2, s2
+    VMUL.F32 s2, s2, s1
+    VSUB.F32 s0, s0, s2
+
+    // Salva o resultado da expressão da linha 4 no res_array
+    LDR r1, =res_array
+    LDR r2, =4
+    ADD r1, r1, r2, LSL #2
+    VSTR s0, [r1]
+
+// -- Mostrar resultado no display --
+
+    // Converte float para inteiro
+    VCVTR.S32.F32 s0, s0
+    VMOV r0, s0
+
+    // Extrai dígitos via VFP
+    VMOV s20, r0
+    VCVT.F32.S32 s20, s20
+    LDR r1, =const_10
+    VLDR s21, [r1]
+    LDR r3, =seg7_table
+
+    // Unidade
+    VDIV.F32 s22, s20, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s23, s22
+    VMUL.F32 s24, s23, s21
+    VSUB.F32 s24, s20, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r2, s24
+    LDR r2, [r3, r2, LSL #2]
+
+    // Dezena
+    VDIV.F32 s22, s23, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s25, s22
+    VMUL.F32 s24, s25, s21
+    VSUB.F32 s24, s23, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r6, s24
+    LDR r6, [r3, r6, LSL #2]
+
+    // Centena
+    VDIV.F32 s22, s25, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s26, s22
+    VMUL.F32 s24, s26, s21
+    VSUB.F32 s24, s25, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r7, s24
+    LDR r7, [r3, r7, LSL #2]
+
+    // Milhar
+    VDIV.F32 s22, s26, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s27, s22
+    VMUL.F32 s24, s27, s21
+    VSUB.F32 s24, s26, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r1, s24
+    LDR r1, [r3, r1, LSL #2]
+
+    // Empacota HEX3:HEX2:HEX1:HEX0
+    ORR r0, r2, r6, LSL #8
+    ORR r0, r0, r7, LSL #16
+    ORR r0, r0, r1, LSL #24
+
+    // Escreve nos displays
+    LDR r1, =0xFF200020
+    STR r0, [r1]
+
+    // Carrega 2.0
+    LDR r0, =num_10
+    VLDR s0, [r0]
+
+    // Carrega 10.0
+    LDR r0, =num_11
+    VLDR s1, [r0]
+
+// -- Operação: ^ --
+    VCVT.S32.F32 s2, s1
+    VMOV r1, s2
+    LDR r2, =num_12
+    VLDR s2, [r2]
+pow_12_loop:
+    CMP r1, #0
+    BLE pow_12_end
+    VMUL.F32 s2, s2, s0
+    SUB r1, r1, #1
+    B pow_12_loop
+pow_12_end:
+    VMOV.F32 s0, s2
+
+    // Salva o resultado da expressão da linha 5 no res_array
+    LDR r1, =res_array
+    LDR r2, =5
+    ADD r1, r1, r2, LSL #2
+    VSTR s0, [r1]
+
+// -- Mostrar resultado no display --
+
+    // Converte float para inteiro
+    VCVTR.S32.F32 s0, s0
+    VMOV r0, s0
+
+    // Extrai dígitos via VFP
+    VMOV s20, r0
+    VCVT.F32.S32 s20, s20
+    LDR r1, =const_10
+    VLDR s21, [r1]
+    LDR r3, =seg7_table
+
+    // Unidade
+    VDIV.F32 s22, s20, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s23, s22
+    VMUL.F32 s24, s23, s21
+    VSUB.F32 s24, s20, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r2, s24
+    LDR r2, [r3, r2, LSL #2]
+
+    // Dezena
+    VDIV.F32 s22, s23, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s25, s22
+    VMUL.F32 s24, s25, s21
+    VSUB.F32 s24, s23, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r6, s24
+    LDR r6, [r3, r6, LSL #2]
+
+    // Centena
+    VDIV.F32 s22, s25, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s26, s22
+    VMUL.F32 s24, s26, s21
+    VSUB.F32 s24, s25, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r7, s24
+    LDR r7, [r3, r7, LSL #2]
+
+    // Milhar
+    VDIV.F32 s22, s26, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s27, s22
+    VMUL.F32 s24, s27, s21
+    VSUB.F32 s24, s26, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r1, s24
+    LDR r1, [r3, r1, LSL #2]
+
+    // Empacota HEX3:HEX2:HEX1:HEX0
+    ORR r0, r2, r6, LSL #8
+    ORR r0, r0, r7, LSL #16
+    ORR r0, r0, r1, LSL #24
+
+    // Escreve nos displays
+    LDR r1, =0xFF200020
+    STR r0, [r1]
+
+    // Carrega 100.0
+    LDR r0, =num_13
+    VLDR s0, [r0]
+
+// -- Comando: Salva em (CEM) --
+    LDR r1, =CEM_var
+    VSTR s0, [r1]
+
+    // Salva o resultado da expressão da linha 6 no res_array
+    LDR r1, =res_array
+    LDR r2, =6
+    ADD r1, r1, r2, LSL #2
+    VSTR s0, [r1]
+
+// -- Mostrar resultado no display --
+
+    // Converte float para inteiro
+    VCVTR.S32.F32 s0, s0
+    VMOV r0, s0
+
+    // Extrai dígitos via VFP
+    VMOV s20, r0
+    VCVT.F32.S32 s20, s20
+    LDR r1, =const_10
+    VLDR s21, [r1]
+    LDR r3, =seg7_table
+
+    // Unidade
+    VDIV.F32 s22, s20, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s23, s22
+    VMUL.F32 s24, s23, s21
+    VSUB.F32 s24, s20, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r2, s24
+    LDR r2, [r3, r2, LSL #2]
+
+    // Dezena
+    VDIV.F32 s22, s23, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s25, s22
+    VMUL.F32 s24, s25, s21
+    VSUB.F32 s24, s23, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r6, s24
+    LDR r6, [r3, r6, LSL #2]
+
+    // Centena
+    VDIV.F32 s22, s25, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s26, s22
+    VMUL.F32 s24, s26, s21
+    VSUB.F32 s24, s25, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r7, s24
+    LDR r7, [r3, r7, LSL #2]
+
+    // Milhar
+    VDIV.F32 s22, s26, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s27, s22
+    VMUL.F32 s24, s27, s21
+    VSUB.F32 s24, s26, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r1, s24
+    LDR r1, [r3, r1, LSL #2]
+
+    // Empacota HEX3:HEX2:HEX1:HEX0
+    ORR r0, r2, r6, LSL #8
+    ORR r0, r0, r7, LSL #16
+    ORR r0, r0, r1, LSL #24
+
+    // Escreve nos displays
+    LDR r1, =0xFF200020
+    STR r0, [r1]
+
+// -- Comando: Carrega de (CEM) --
+    LDR r1, =CEM_var
+    VLDR s0, [r1]
+
+    // Carrega 1
+    LDR r0, =num_14
+    VLDR s1, [r0]
+
+// -- Operação: + --
+    VADD.F32 s0, s0, s1
+
+    // Salva o resultado da expressão da linha 7 no res_array
+    LDR r1, =res_array
+    LDR r2, =7
+    ADD r1, r1, r2, LSL #2
+    VSTR s0, [r1]
+
+// -- Mostrar resultado no display --
+
+    // Converte float para inteiro
+    VCVTR.S32.F32 s0, s0
+    VMOV r0, s0
+
+    // Extrai dígitos via VFP
+    VMOV s20, r0
+    VCVT.F32.S32 s20, s20
+    LDR r1, =const_10
+    VLDR s21, [r1]
+    LDR r3, =seg7_table
+
+    // Unidade
+    VDIV.F32 s22, s20, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s23, s22
+    VMUL.F32 s24, s23, s21
+    VSUB.F32 s24, s20, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r2, s24
+    LDR r2, [r3, r2, LSL #2]
+
+    // Dezena
+    VDIV.F32 s22, s23, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s25, s22
+    VMUL.F32 s24, s25, s21
+    VSUB.F32 s24, s23, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r6, s24
+    LDR r6, [r3, r6, LSL #2]
+
+    // Centena
+    VDIV.F32 s22, s25, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s26, s22
+    VMUL.F32 s24, s26, s21
+    VSUB.F32 s24, s25, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r7, s24
+    LDR r7, [r3, r7, LSL #2]
+
+    // Milhar
+    VDIV.F32 s22, s26, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s27, s22
+    VMUL.F32 s24, s27, s21
+    VSUB.F32 s24, s26, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r1, s24
+    LDR r1, [r3, r1, LSL #2]
+
+    // Empacota HEX3:HEX2:HEX1:HEX0
+    ORR r0, r2, r6, LSL #8
+    ORR r0, r0, r7, LSL #16
+    ORR r0, r0, r1, LSL #24
+
+    // Escreve nos displays
+    LDR r1, =0xFF200020
+    STR r0, [r1]
+
+// -- Comando: Carrega de (CEM) --
+    LDR r1, =CEM_var
+    VLDR s0, [r1]
+
+    // Salva o resultado da expressão da linha 8 no res_array
+    LDR r1, =res_array
+    LDR r2, =8
+    ADD r1, r1, r2, LSL #2
+    VSTR s0, [r1]
+
+// -- Mostrar resultado no display --
+
+    // Converte float para inteiro
+    VCVTR.S32.F32 s0, s0
+    VMOV r0, s0
+
+    // Extrai dígitos via VFP
+    VMOV s20, r0
+    VCVT.F32.S32 s20, s20
+    LDR r1, =const_10
+    VLDR s21, [r1]
+    LDR r3, =seg7_table
+
+    // Unidade
+    VDIV.F32 s22, s20, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s23, s22
+    VMUL.F32 s24, s23, s21
+    VSUB.F32 s24, s20, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r2, s24
+    LDR r2, [r3, r2, LSL #2]
+
+    // Dezena
+    VDIV.F32 s22, s23, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s25, s22
+    VMUL.F32 s24, s25, s21
+    VSUB.F32 s24, s23, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r6, s24
+    LDR r6, [r3, r6, LSL #2]
+
+    // Centena
+    VDIV.F32 s22, s25, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s26, s22
+    VMUL.F32 s24, s26, s21
+    VSUB.F32 s24, s25, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r7, s24
+    LDR r7, [r3, r7, LSL #2]
+
+    // Milhar
+    VDIV.F32 s22, s26, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s27, s22
+    VMUL.F32 s24, s27, s21
+    VSUB.F32 s24, s26, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r1, s24
+    LDR r1, [r3, r1, LSL #2]
+
+    // Empacota HEX3:HEX2:HEX1:HEX0
+    ORR r0, r2, r6, LSL #8
+    ORR r0, r0, r7, LSL #16
+    ORR r0, r0, r1, LSL #24
+
+    // Escreve nos displays
+    LDR r1, =0xFF200020
+    STR r0, [r1]
+
+    // Carrega 1
+    LDR r0, =num_15
+    VLDR s0, [r0]
+
+// -- Comando: (N RES) --
+    VCVT.S32.F32 s0, s0
+    VMOV r1, s0
+    LDR r2, =9
+    SUB r1, r2, r1
+    CMP r1, #0
+    BGE res_ok_9_1
+    LDR r2, =num_16
+    VLDR s0, [r2]
+    B res_end_9_1
+res_ok_9_1:
+    LDR r2, =res_array
+    ADD r2, r2, r1, LSL #2
+    VLDR s0, [r2]
+res_end_9_1:
+
+    // Carrega 2.0
+    LDR r0, =num_17
+    VLDR s1, [r0]
+
+// -- Operação: + --
+    VADD.F32 s0, s0, s1
+
+    // Salva o resultado da expressão da linha 9 no res_array
+    LDR r1, =res_array
+    LDR r2, =9
+    ADD r1, r1, r2, LSL #2
+    VSTR s0, [r1]
+
+// -- Mostrar resultado no display --
+
+    // Converte float para inteiro
+    VCVTR.S32.F32 s0, s0
+    VMOV r0, s0
+
+    // Extrai dígitos via VFP
+    VMOV s20, r0
+    VCVT.F32.S32 s20, s20
+    LDR r1, =const_10
+    VLDR s21, [r1]
+    LDR r3, =seg7_table
+
+    // Unidade
+    VDIV.F32 s22, s20, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s23, s22
+    VMUL.F32 s24, s23, s21
+    VSUB.F32 s24, s20, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r2, s24
+    LDR r2, [r3, r2, LSL #2]
+
+    // Dezena
+    VDIV.F32 s22, s23, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s25, s22
+    VMUL.F32 s24, s25, s21
+    VSUB.F32 s24, s23, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r6, s24
+    LDR r6, [r3, r6, LSL #2]
+
+    // Centena
+    VDIV.F32 s22, s25, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s26, s22
+    VMUL.F32 s24, s26, s21
+    VSUB.F32 s24, s25, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r7, s24
+    LDR r7, [r3, r7, LSL #2]
+
+    // Milhar
+    VDIV.F32 s22, s26, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s27, s22
+    VMUL.F32 s24, s27, s21
+    VSUB.F32 s24, s26, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r1, s24
+    LDR r1, [r3, r1, LSL #2]
+
+    // Empacota HEX3:HEX2:HEX1:HEX0
+    ORR r0, r2, r6, LSL #8
+    ORR r0, r0, r7, LSL #16
+    ORR r0, r0, r1, LSL #24
+
+    // Escreve nos displays
+    LDR r1, =0xFF200020
+    STR r0, [r1]
+
+// -- Comando: Carrega de (MEM) --
+    LDR r1, =MEM_var
+    VLDR s0, [r1]
+
+    // Carrega 3.0
+    LDR r0, =num_18
+    VLDR s1, [r0]
+
+// -- Operação: - --
+    VSUB.F32 s0, s0, s1
+
+    // Salva o resultado da expressão da linha 10 no res_array
+    LDR r1, =res_array
+    LDR r2, =10
+    ADD r1, r1, r2, LSL #2
+    VSTR s0, [r1]
+
+// -- Mostrar resultado no display --
+
+    // Converte float para inteiro
+    VCVTR.S32.F32 s0, s0
+    VMOV r0, s0
+
+    // Extrai dígitos via VFP
+    VMOV s20, r0
+    VCVT.F32.S32 s20, s20
+    LDR r1, =const_10
+    VLDR s21, [r1]
+    LDR r3, =seg7_table
+
+    // Unidade
+    VDIV.F32 s22, s20, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s23, s22
+    VMUL.F32 s24, s23, s21
+    VSUB.F32 s24, s20, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r2, s24
+    LDR r2, [r3, r2, LSL #2]
+
+    // Dezena
+    VDIV.F32 s22, s23, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s25, s22
+    VMUL.F32 s24, s25, s21
+    VSUB.F32 s24, s23, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r6, s24
+    LDR r6, [r3, r6, LSL #2]
+
+    // Centena
+    VDIV.F32 s22, s25, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s26, s22
+    VMUL.F32 s24, s26, s21
+    VSUB.F32 s24, s25, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r7, s24
+    LDR r7, [r3, r7, LSL #2]
+
+    // Milhar
+    VDIV.F32 s22, s26, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s27, s22
+    VMUL.F32 s24, s27, s21
+    VSUB.F32 s24, s26, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r1, s24
+    LDR r1, [r3, r1, LSL #2]
+
+    // Empacota HEX3:HEX2:HEX1:HEX0
+    ORR r0, r2, r6, LSL #8
+    ORR r0, r0, r7, LSL #16
+    ORR r0, r0, r1, LSL #24
+
+    // Escreve nos displays
+    LDR r1, =0xFF200020
+    STR r0, [r1]
+
+    // Carrega 2
+    LDR r0, =num_19
+    VLDR s0, [r0]
+
+// -- Comando: (N RES) --
+    VCVT.S32.F32 s0, s0
+    VMOV r1, s0
+    LDR r2, =11
+    SUB r1, r2, r1
+    CMP r1, #0
+    BGE res_ok_11_1
+    LDR r2, =num_20
+    VLDR s0, [r2]
+    B res_end_11_1
+res_ok_11_1:
+    LDR r2, =res_array
+    ADD r2, r2, r1, LSL #2
+    VLDR s0, [r2]
+res_end_11_1:
+
+    // Carrega 4.0
+    LDR r0, =num_21
+    VLDR s1, [r0]
+
+// -- Operação: * --
+    VMUL.F32 s0, s0, s1
+
+    // Salva o resultado da expressão da linha 11 no res_array
+    LDR r1, =res_array
+    LDR r2, =11
+    ADD r1, r1, r2, LSL #2
+    VSTR s0, [r1]
+
+// -- Mostrar resultado no display --
+
+    // Converte float para inteiro
+    VCVTR.S32.F32 s0, s0
+    VMOV r0, s0
+
+    // Extrai dígitos via VFP
+    VMOV s20, r0
+    VCVT.F32.S32 s20, s20
+    LDR r1, =const_10
+    VLDR s21, [r1]
+    LDR r3, =seg7_table
+
+    // Unidade
+    VDIV.F32 s22, s20, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s23, s22
+    VMUL.F32 s24, s23, s21
+    VSUB.F32 s24, s20, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r2, s24
+    LDR r2, [r3, r2, LSL #2]
+
+    // Dezena
+    VDIV.F32 s22, s23, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s25, s22
+    VMUL.F32 s24, s25, s21
+    VSUB.F32 s24, s23, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r6, s24
+    LDR r6, [r3, r6, LSL #2]
+
+    // Centena
+    VDIV.F32 s22, s25, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s26, s22
+    VMUL.F32 s24, s26, s21
+    VSUB.F32 s24, s25, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r7, s24
+    LDR r7, [r3, r7, LSL #2]
+
+    // Milhar
+    VDIV.F32 s22, s26, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s27, s22
+    VMUL.F32 s24, s27, s21
+    VSUB.F32 s24, s26, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r1, s24
+    LDR r1, [r3, r1, LSL #2]
+
+    // Empacota HEX3:HEX2:HEX1:HEX0
+    ORR r0, r2, r6, LSL #8
+    ORR r0, r0, r7, LSL #16
+    ORR r0, r0, r1, LSL #24
+
+    // Escreve nos displays
+    LDR r1, =0xFF200020
+    STR r0, [r1]
+
+// -- Comando: Carrega de (MEM) --
+    LDR r1, =MEM_var
+    VLDR s0, [r1]
+
+    // Carrega 1
+    LDR r0, =num_22
+    VLDR s1, [r0]
+
+// -- Comando: (N RES) --
+    VCVT.S32.F32 s1, s1
+    VMOV r1, s1
+    LDR r2, =12
+    SUB r1, r2, r1
+    CMP r1, #0
+    BGE res_ok_12_2
+    LDR r2, =num_23
+    VLDR s1, [r2]
+    B res_end_12_2
+res_ok_12_2:
+    LDR r2, =res_array
+    ADD r2, r2, r1, LSL #2
+    VLDR s1, [r2]
+res_end_12_2:
+
+// -- Operação: / --
+    VDIV.F32 s0, s0, s1
+
+    // Salva o resultado da expressão da linha 12 no res_array
+    LDR r1, =res_array
+    LDR r2, =12
+    ADD r1, r1, r2, LSL #2
+    VSTR s0, [r1]
+
+// -- Mostrar resultado no display --
+
+    // Converte float para inteiro
+    VCVTR.S32.F32 s0, s0
+    VMOV r0, s0
+
+    // Extrai dígitos via VFP
+    VMOV s20, r0
+    VCVT.F32.S32 s20, s20
+    LDR r1, =const_10
+    VLDR s21, [r1]
+    LDR r3, =seg7_table
+
+    // Unidade
+    VDIV.F32 s22, s20, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s23, s22
+    VMUL.F32 s24, s23, s21
+    VSUB.F32 s24, s20, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r2, s24
+    LDR r2, [r3, r2, LSL #2]
+
+    // Dezena
+    VDIV.F32 s22, s23, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s25, s22
+    VMUL.F32 s24, s25, s21
+    VSUB.F32 s24, s23, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r6, s24
+    LDR r6, [r3, r6, LSL #2]
+
+    // Centena
+    VDIV.F32 s22, s25, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s26, s22
+    VMUL.F32 s24, s26, s21
+    VSUB.F32 s24, s25, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r7, s24
+    LDR r7, [r3, r7, LSL #2]
+
+    // Milhar
+    VDIV.F32 s22, s26, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s27, s22
+    VMUL.F32 s24, s27, s21
+    VSUB.F32 s24, s26, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r1, s24
+    LDR r1, [r3, r1, LSL #2]
+
+    // Empacota HEX3:HEX2:HEX1:HEX0
+    ORR r0, r2, r6, LSL #8
+    ORR r0, r0, r7, LSL #16
+    ORR r0, r0, r1, LSL #24
+
+    // Escreve nos displays
+    LDR r1, =0xFF200020
+    STR r0, [r1]
+
+    // Carrega 3
+    LDR r0, =num_24
+    VLDR s0, [r0]
+
+// -- Comando: (N RES) --
+    VCVT.S32.F32 s0, s0
+    VMOV r1, s0
+    LDR r2, =13
+    SUB r1, r2, r1
+    CMP r1, #0
+    BGE res_ok_13_1
+    LDR r2, =num_25
+    VLDR s0, [r2]
+    B res_end_13_1
+res_ok_13_1:
+    LDR r2, =res_array
+    ADD r2, r2, r1, LSL #2
+    VLDR s0, [r2]
+res_end_13_1:
+
+    // Carrega 7.0
+    LDR r0, =num_26
+    VLDR s1, [r0]
+
+// -- Operação: % --
+    VDIV.F32 s2, s0, s1
+    VCVT.S32.F32 s2, s2
+    VCVT.F32.S32 s2, s2
+    VMUL.F32 s2, s2, s1
+    VSUB.F32 s0, s0, s2
+
+    // Salva o resultado da expressão da linha 13 no res_array
+    LDR r1, =res_array
+    LDR r2, =13
+    ADD r1, r1, r2, LSL #2
+    VSTR s0, [r1]
+
+// -- Mostrar resultado no display --
+
+    // Converte float para inteiro
+    VCVTR.S32.F32 s0, s0
+    VMOV r0, s0
+
+    // Extrai dígitos via VFP
+    VMOV s20, r0
+    VCVT.F32.S32 s20, s20
+    LDR r1, =const_10
+    VLDR s21, [r1]
+    LDR r3, =seg7_table
+
+    // Unidade
+    VDIV.F32 s22, s20, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s23, s22
+    VMUL.F32 s24, s23, s21
+    VSUB.F32 s24, s20, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r2, s24
+    LDR r2, [r3, r2, LSL #2]
+
+    // Dezena
+    VDIV.F32 s22, s23, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s25, s22
+    VMUL.F32 s24, s25, s21
+    VSUB.F32 s24, s23, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r6, s24
+    LDR r6, [r3, r6, LSL #2]
+
+    // Centena
+    VDIV.F32 s22, s25, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s26, s22
+    VMUL.F32 s24, s26, s21
+    VSUB.F32 s24, s25, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r7, s24
+    LDR r7, [r3, r7, LSL #2]
+
+    // Milhar
+    VDIV.F32 s22, s26, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s27, s22
+    VMUL.F32 s24, s27, s21
+    VSUB.F32 s24, s26, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r1, s24
+    LDR r1, [r3, r1, LSL #2]
+
+    // Empacota HEX3:HEX2:HEX1:HEX0
+    ORR r0, r2, r6, LSL #8
+    ORR r0, r0, r7, LSL #16
+    ORR r0, r0, r1, LSL #24
+
+    // Escreve nos displays
+    LDR r1, =0xFF200020
+    STR r0, [r1]
+
+    // Carrega 1
+    LDR r0, =num_27
+    VLDR s0, [r0]
+
+// -- Comando: (N RES) --
+    VCVT.S32.F32 s0, s0
+    VMOV r1, s0
+    LDR r2, =14
+    SUB r1, r2, r1
+    CMP r1, #0
+    BGE res_ok_14_1
+    LDR r2, =num_28
+    VLDR s0, [r2]
+    B res_end_14_1
+res_ok_14_1:
+    LDR r2, =res_array
+    ADD r2, r2, r1, LSL #2
+    VLDR s0, [r2]
+res_end_14_1:
+
+    // Carrega 3.0
+    LDR r0, =num_29
+    VLDR s1, [r0]
+
+// -- Operação: ^ --
+    VCVT.S32.F32 s2, s1
+    VMOV r1, s2
+    LDR r2, =num_30
+    VLDR s2, [r2]
+pow_30_loop:
+    CMP r1, #0
+    BLE pow_30_end
+    VMUL.F32 s2, s2, s0
+    SUB r1, r1, #1
+    B pow_30_loop
+pow_30_end:
+    VMOV.F32 s0, s2
+
+    // Salva o resultado da expressão da linha 14 no res_array
+    LDR r1, =res_array
+    LDR r2, =14
+    ADD r1, r1, r2, LSL #2
+    VSTR s0, [r1]
+
+// -- Mostrar resultado no display --
+
+    // Converte float para inteiro
+    VCVTR.S32.F32 s0, s0
+    VMOV r0, s0
+
+    // Extrai dígitos via VFP
+    VMOV s20, r0
+    VCVT.F32.S32 s20, s20
+    LDR r1, =const_10
+    VLDR s21, [r1]
+    LDR r3, =seg7_table
+
+    // Unidade
+    VDIV.F32 s22, s20, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s23, s22
+    VMUL.F32 s24, s23, s21
+    VSUB.F32 s24, s20, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r2, s24
+    LDR r2, [r3, r2, LSL #2]
+
+    // Dezena
+    VDIV.F32 s22, s23, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s25, s22
+    VMUL.F32 s24, s25, s21
+    VSUB.F32 s24, s23, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r6, s24
+    LDR r6, [r3, r6, LSL #2]
+
+    // Centena
+    VDIV.F32 s22, s25, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s26, s22
+    VMUL.F32 s24, s26, s21
+    VSUB.F32 s24, s25, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r7, s24
+    LDR r7, [r3, r7, LSL #2]
+
+    // Milhar
+    VDIV.F32 s22, s26, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s27, s22
+    VMUL.F32 s24, s27, s21
+    VSUB.F32 s24, s26, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r1, s24
+    LDR r1, [r3, r1, LSL #2]
+
+    // Empacota HEX3:HEX2:HEX1:HEX0
+    ORR r0, r2, r6, LSL #8
+    ORR r0, r0, r7, LSL #16
+    ORR r0, r0, r1, LSL #24
+
+    // Escreve nos displays
+    LDR r1, =0xFF200020
+    STR r0, [r1]
 // -- Fim da execucao --
     BX LR
 
 .data
-MEMCORRETO_var:
+CEM_var:
+    .float 0.0
+MEM_var:
     .float 0.0
 res_array:
-    .space 4 // Espaço para 1 resultados float
+    .space 60 // Espaço para 15 resultados float
 num_0:
-    .float 20.0
+    .float 3.0
+num_1:
+    .float 5.0
+num_2:
+    .float 10.0
+num_3:
+    .float 4.0
+num_4:
+    .float 6.0
+num_5:
+    .float 7.0
+num_6:
+    .float 15.0
+num_7:
+    .float 3.0
+num_8:
+    .float 17.0
+num_9:
+    .float 5.0
+num_10:
+    .float 2.0
+num_11:
+    .float 10.0
+num_12:
+    .float 1.0
+num_13:
+    .float 100.0
+num_14:
+    .float 1
+num_15:
+    .float 1
+num_16:
+    .float 0.0
+num_17:
+    .float 2.0
+num_18:
+    .float 3.0
+num_19:
+    .float 2
+num_20:
+    .float 0.0
+num_21:
+    .float 4.0
+num_22:
+    .float 1
+num_23:
+    .float 0.0
+num_24:
+    .float 3
+num_25:
+    .float 0.0
+num_26:
+    .float 7.0
+num_27:
+    .float 1
+num_28:
+    .float 0.0
+num_29:
+    .float 3.0
+num_30:
+    .float 1.0
 
 const_10:
     .float 10.0
