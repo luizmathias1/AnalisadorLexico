@@ -26,7 +26,7 @@ def formatarResultado(res):
     elif res == float('-inf'):
         return "-Inf"
     else:
-        return f"{res:.1f}"
+        return f"{res:.2f}"
 
 def formatarIEEE754(res):
     bytes_ieee = struct.pack('>d', res)

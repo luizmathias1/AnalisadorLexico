@@ -20,68 +20,55 @@ def adicionarCabecalho(instrucoes):
     instrucoes.append("    VMSR FPEXC, r0")
 
 def mostrarDisplay(instrucoes, reg_esq):
-    instrucoes.append(f"\n// -- Mostrar resultado no display --")
-    instrucoes.append(f"\n    // Converte float para inteiro")
-    instrucoes.append(f"    VCVTR.S32.F32 s19, s{reg_esq}")
-    instrucoes.append(f"    VMOV r0, s19")
-
-    instrucoes.append(f"\n    // Extrai dígitos via VFP")
-    instrucoes.append(f"    VMOV s20, r0")
+    instrucoes.append(f"\n// -- Mostrar resultado float nos 8 displays (valor * 100) --")
+    instrucoes.append(f"\n    // Ex.: 42.31 -> 4231 (com zeros a esquerda nos demais displays)")
+    instrucoes.append(f"    VABS.F32 s20, s{reg_esq}")
+    instrucoes.append(f"    LDR r1, =const_100")
+    instrucoes.append(f"    VLDR s21, [r1]")
+    instrucoes.append(f"    VMUL.F32 s20, s20, s21")
+    instrucoes.append(f"    VCVTR.S32.F32 s20, s20")
     instrucoes.append(f"    VCVT.F32.S32 s20, s20")
     instrucoes.append(f"    LDR r1, =const_10")
     instrucoes.append(f"    VLDR s21, [r1]")
     instrucoes.append(f"    LDR r3, =seg7_table")
 
-    instrucoes.append(f"\n    // Unidade")
-    instrucoes.append(f"    VDIV.F32 s22, s20, s21")
-    instrucoes.append(f"    VCVT.S32.F32 s22, s22")
-    instrucoes.append(f"    VCVT.F32.S32 s23, s22")
-    instrucoes.append(f"    VMUL.F32 s24, s23, s21")
-    instrucoes.append(f"    VSUB.F32 s24, s20, s24")
-    instrucoes.append(f"    VCVT.S32.F32 s24, s24")
-    instrucoes.append(f"    VMOV r2, s24")
-    instrucoes.append(f"    LDR r2, [r3, r2, LSL #2]")
+    regs_display = ["r2", "r6", "r7", "r1", "r4", "r5", "r8", "r9"]
+    regs_quociente = [23, 25, 26, 27, 28, 29, 30, 31]
+    s_atual = 20
 
-    instrucoes.append(f"\n    // Dezena")
-    instrucoes.append(f"    VDIV.F32 s22, s23, s21")
-    instrucoes.append(f"    VCVT.S32.F32 s22, s22")
-    instrucoes.append(f"    VCVT.F32.S32 s25, s22")
-    instrucoes.append(f"    VMUL.F32 s24, s25, s21")
-    instrucoes.append(f"    VSUB.F32 s24, s23, s24")
-    instrucoes.append(f"    VCVT.S32.F32 s24, s24")
-    instrucoes.append(f"    VMOV r6, s24")
-    instrucoes.append(f"    LDR r6, [r3, r6, LSL #2]")
+    for idx, reg_dest in enumerate(regs_display):
+        display_num = 8 - idx
+        prox_quociente = regs_quociente[idx]
 
-    instrucoes.append(f"\n    // Centena")
-    instrucoes.append(f"    VDIV.F32 s22, s25, s21")
-    instrucoes.append(f"    VCVT.S32.F32 s22, s22")
-    instrucoes.append(f"    VCVT.F32.S32 s26, s22")
-    instrucoes.append(f"    VMUL.F32 s24, s26, s21")
-    instrucoes.append(f"    VSUB.F32 s24, s25, s24")
-    instrucoes.append(f"    VCVT.S32.F32 s24, s24")
-    instrucoes.append(f"    VMOV r7, s24")
-    instrucoes.append(f"    LDR r7, [r3, r7, LSL #2]")
+        instrucoes.append(f"\n    // Display {display_num}")
+        instrucoes.append(f"    VDIV.F32 s22, s{s_atual}, s21")
+        instrucoes.append(f"    VCVT.S32.F32 s22, s22")
+        instrucoes.append(f"    VCVT.F32.S32 s{prox_quociente}, s22")
+        instrucoes.append(f"    VMUL.F32 s24, s{prox_quociente}, s21")
+        instrucoes.append(f"    VSUB.F32 s24, s{s_atual}, s24")
+        instrucoes.append(f"    VCVT.S32.F32 s24, s24")
+        instrucoes.append(f"    VMOV {reg_dest}, s24")
+        instrucoes.append(f"    LDR {reg_dest}, [r3, {reg_dest}, LSL #2]")
 
-    instrucoes.append(f"\n    // Milhar")
-    instrucoes.append(f"    VDIV.F32 s22, s26, s21")
-    instrucoes.append(f"    VCVT.S32.F32 s22, s22")
-    instrucoes.append(f"    VCVT.F32.S32 s27, s22")
-    instrucoes.append(f"    VMUL.F32 s24, s27, s21")
-    instrucoes.append(f"    VSUB.F32 s24, s26, s24")
-    instrucoes.append(f"    VCVT.S32.F32 s24, s24")
-    instrucoes.append(f"    VMOV r1, s24")
-    instrucoes.append(f"    LDR r1, [r3, r1, LSL #2]")
+        s_atual = prox_quociente
 
-    instrucoes.append(f"\n    // Empacota HEX3:HEX2:HEX1:HEX0")
-    instrucoes.append(f"    ORR r0, r2, r6, LSL #8")
-    instrucoes.append(f"    ORR r0, r0, r7, LSL #16")
-    instrucoes.append(f"    ORR r0, r0, r1, LSL #24")
+    instrucoes.append(f"\n    // Empacota HEX3..HEX0")
+    instrucoes.append(f"    ORR r10, r2, r6, LSL #8")
+    instrucoes.append(f"    ORR r10, r10, r7, LSL #16")
+    instrucoes.append(f"    ORR r10, r10, r1, LSL #24")
 
-    instrucoes.append(f"\n    // Escreve nos displays")
-    instrucoes.append(f"    LDR r1, =0xFF200020")
-    instrucoes.append(f"    STR r0, [r1]")
+    instrucoes.append(f"\n    // Empacota HEX7..HEX4")
+    instrucoes.append(f"    ORR r11, r4, r5, LSL #8")
+    instrucoes.append(f"    ORR r11, r11, r8, LSL #16")
+    instrucoes.append(f"    ORR r11, r11, r9, LSL #24")
 
-def mostrarBinario(instrucoes, reg_esq, sufixo_label):
+    instrucoes.append(f"\n    // Escreve nos 8 displays")
+    instrucoes.append(f"    LDR r0, =0xFF200020")
+    instrucoes.append(f"    STR r10, [r0]")
+    instrucoes.append(f"    LDR r0, =0xFF200030")
+    instrucoes.append(f"    STR r11, [r0]")
+
+def mostrarBinario(instrucoes, reg_esq):
     instrucoes.append(f"\n// -- Mostrar resultado em binário (pisca MSB/LSB do double) --")
     instrucoes.append(f"    VCVT.F64.F32 d1, s{reg_esq}")
     instrucoes.append(f"    VMOV r4, r5, d1")
@@ -245,7 +232,7 @@ def gerarAssembly():
 
             # Mostra no display o topo da pilha (s0)
             mostrarDisplay(instrucoes, 0)
-            mostrarBinario(instrucoes, 0, linha_idx)
+            mostrarBinario(instrucoes, 0)
             
         linha_idx += 1
 
@@ -272,6 +259,8 @@ def gerarAssembly():
     
     instrucoes.append("\nconst_10:")
     instrucoes.append("    .float 10.0")
+    instrucoes.append("\nconst_100:")
+    instrucoes.append("    .float 100.0")
 
     instrucoes.append("\nseg7_table:")
     instrucoes.append("    .word 0x3F  // 0")

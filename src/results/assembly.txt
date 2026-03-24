@@ -14,11 +14,11 @@ main:
     MOV r0, #0x40000000
     VMSR FPEXC, r0
 
-    // Carrega 4.0
+    // Carrega 42.31
     LDR r0, =num_0
     VLDR s0, [r0]
 
-    // Carrega 2.0
+    // Carrega 21.78
     LDR r0, =num_1
     VLDR s1, [r0]
 
@@ -31,20 +31,20 @@ main:
     ADD r1, r1, r2, LSL #2
     VSTR s0, [r1]
 
-// -- Mostrar resultado no display --
+// -- Mostrar resultado float nos 8 displays (valor * 100) --
 
-    // Converte float para inteiro
-    VCVTR.S32.F32 s19, s0
-    VMOV r0, s19
-
-    // Extrai dígitos via VFP
-    VMOV s20, r0
+    // Ex.: 42.31 -> 4231 (com zeros a esquerda nos demais displays)
+    VABS.F32 s20, s0
+    LDR r1, =const_100
+    VLDR s21, [r1]
+    VMUL.F32 s20, s20, s21
+    VCVTR.S32.F32 s20, s20
     VCVT.F32.S32 s20, s20
     LDR r1, =const_10
     VLDR s21, [r1]
     LDR r3, =seg7_table
 
-    // Unidade
+    // Display 8
     VDIV.F32 s22, s20, s21
     VCVT.S32.F32 s22, s22
     VCVT.F32.S32 s23, s22
@@ -54,7 +54,7 @@ main:
     VMOV r2, s24
     LDR r2, [r3, r2, LSL #2]
 
-    // Dezena
+    // Display 7
     VDIV.F32 s22, s23, s21
     VCVT.S32.F32 s22, s22
     VCVT.F32.S32 s25, s22
@@ -64,7 +64,7 @@ main:
     VMOV r6, s24
     LDR r6, [r3, r6, LSL #2]
 
-    // Centena
+    // Display 6
     VDIV.F32 s22, s25, s21
     VCVT.S32.F32 s22, s22
     VCVT.F32.S32 s26, s22
@@ -74,7 +74,7 @@ main:
     VMOV r7, s24
     LDR r7, [r3, r7, LSL #2]
 
-    // Milhar
+    // Display 5
     VDIV.F32 s22, s26, s21
     VCVT.S32.F32 s22, s22
     VCVT.F32.S32 s27, s22
@@ -84,14 +84,61 @@ main:
     VMOV r1, s24
     LDR r1, [r3, r1, LSL #2]
 
-    // Empacota HEX3:HEX2:HEX1:HEX0
-    ORR r0, r2, r6, LSL #8
-    ORR r0, r0, r7, LSL #16
-    ORR r0, r0, r1, LSL #24
+    // Display 4
+    VDIV.F32 s22, s27, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s28, s22
+    VMUL.F32 s24, s28, s21
+    VSUB.F32 s24, s27, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r4, s24
+    LDR r4, [r3, r4, LSL #2]
 
-    // Escreve nos displays
-    LDR r1, =0xFF200020
-    STR r0, [r1]
+    // Display 3
+    VDIV.F32 s22, s28, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s29, s22
+    VMUL.F32 s24, s29, s21
+    VSUB.F32 s24, s28, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r5, s24
+    LDR r5, [r3, r5, LSL #2]
+
+    // Display 2
+    VDIV.F32 s22, s29, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s30, s22
+    VMUL.F32 s24, s30, s21
+    VSUB.F32 s24, s29, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r8, s24
+    LDR r8, [r3, r8, LSL #2]
+
+    // Display 1
+    VDIV.F32 s22, s30, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s31, s22
+    VMUL.F32 s24, s31, s21
+    VSUB.F32 s24, s30, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r9, s24
+    LDR r9, [r3, r9, LSL #2]
+
+    // Empacota HEX3..HEX0
+    ORR r10, r2, r6, LSL #8
+    ORR r10, r10, r7, LSL #16
+    ORR r10, r10, r1, LSL #24
+
+    // Empacota HEX7..HEX4
+    ORR r11, r4, r5, LSL #8
+    ORR r11, r11, r8, LSL #16
+    ORR r11, r11, r9, LSL #24
+
+    // Escreve nos 8 displays
+    LDR r0, =0xFF200020
+    STR r10, [r0]
+    LDR r0, =0xFF200030
+    STR r11, [r0]
 
 // -- Mostrar resultado em binário (pisca MSB/LSB do double) --
     VCVT.F64.F32 d1, s0
@@ -132,20 +179,20 @@ main:
     ADD r1, r1, r2, LSL #2
     VSTR s0, [r1]
 
-// -- Mostrar resultado no display --
+// -- Mostrar resultado float nos 8 displays (valor * 100) --
 
-    // Converte float para inteiro
-    VCVTR.S32.F32 s19, s0
-    VMOV r0, s19
-
-    // Extrai dígitos via VFP
-    VMOV s20, r0
+    // Ex.: 42.31 -> 4231 (com zeros a esquerda nos demais displays)
+    VABS.F32 s20, s0
+    LDR r1, =const_100
+    VLDR s21, [r1]
+    VMUL.F32 s20, s20, s21
+    VCVTR.S32.F32 s20, s20
     VCVT.F32.S32 s20, s20
     LDR r1, =const_10
     VLDR s21, [r1]
     LDR r3, =seg7_table
 
-    // Unidade
+    // Display 8
     VDIV.F32 s22, s20, s21
     VCVT.S32.F32 s22, s22
     VCVT.F32.S32 s23, s22
@@ -155,7 +202,7 @@ main:
     VMOV r2, s24
     LDR r2, [r3, r2, LSL #2]
 
-    // Dezena
+    // Display 7
     VDIV.F32 s22, s23, s21
     VCVT.S32.F32 s22, s22
     VCVT.F32.S32 s25, s22
@@ -165,7 +212,7 @@ main:
     VMOV r6, s24
     LDR r6, [r3, r6, LSL #2]
 
-    // Centena
+    // Display 6
     VDIV.F32 s22, s25, s21
     VCVT.S32.F32 s22, s22
     VCVT.F32.S32 s26, s22
@@ -175,7 +222,7 @@ main:
     VMOV r7, s24
     LDR r7, [r3, r7, LSL #2]
 
-    // Milhar
+    // Display 5
     VDIV.F32 s22, s26, s21
     VCVT.S32.F32 s22, s22
     VCVT.F32.S32 s27, s22
@@ -185,14 +232,61 @@ main:
     VMOV r1, s24
     LDR r1, [r3, r1, LSL #2]
 
-    // Empacota HEX3:HEX2:HEX1:HEX0
-    ORR r0, r2, r6, LSL #8
-    ORR r0, r0, r7, LSL #16
-    ORR r0, r0, r1, LSL #24
+    // Display 4
+    VDIV.F32 s22, s27, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s28, s22
+    VMUL.F32 s24, s28, s21
+    VSUB.F32 s24, s27, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r4, s24
+    LDR r4, [r3, r4, LSL #2]
 
-    // Escreve nos displays
-    LDR r1, =0xFF200020
-    STR r0, [r1]
+    // Display 3
+    VDIV.F32 s22, s28, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s29, s22
+    VMUL.F32 s24, s29, s21
+    VSUB.F32 s24, s28, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r5, s24
+    LDR r5, [r3, r5, LSL #2]
+
+    // Display 2
+    VDIV.F32 s22, s29, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s30, s22
+    VMUL.F32 s24, s30, s21
+    VSUB.F32 s24, s29, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r8, s24
+    LDR r8, [r3, r8, LSL #2]
+
+    // Display 1
+    VDIV.F32 s22, s30, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s31, s22
+    VMUL.F32 s24, s31, s21
+    VSUB.F32 s24, s30, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r9, s24
+    LDR r9, [r3, r9, LSL #2]
+
+    // Empacota HEX3..HEX0
+    ORR r10, r2, r6, LSL #8
+    ORR r10, r10, r7, LSL #16
+    ORR r10, r10, r1, LSL #24
+
+    // Empacota HEX7..HEX4
+    ORR r11, r4, r5, LSL #8
+    ORR r11, r11, r8, LSL #16
+    ORR r11, r11, r9, LSL #24
+
+    // Escreve nos 8 displays
+    LDR r0, =0xFF200020
+    STR r10, [r0]
+    LDR r0, =0xFF200030
+    STR r11, [r0]
 
 // -- Mostrar resultado em binário (pisca MSB/LSB do double) --
     VCVT.F64.F32 d1, s0
@@ -222,9 +316,9 @@ main:
 res_array:
     .space 8 // Espaço para 2 resultados float
 num_0:
-    .float 4.0
+    .float 42.31
 num_1:
-    .float 2.0
+    .float 21.78
 num_2:
     .float 1.0
 num_3:
@@ -232,6 +326,9 @@ num_3:
 
 const_10:
     .float 10.0
+
+const_100:
+    .float 100.0
 
 seg7_table:
     .word 0x3F  // 0

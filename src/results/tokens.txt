@@ -2,7 +2,7 @@
   "entries": [
     {
       "line_number": 1,
-      "line": "(4.0 2.0 +)",
+      "line": "(42.31 21.78 +)",
       "tokens": [
         {
           "token": "(",
@@ -10,27 +10,27 @@
           "position": 0
         },
         {
-          "token": "4.0",
+          "token": "42.31",
           "type": "number",
           "position": 1
         },
         {
-          "token": "2.0",
+          "token": "21.78",
           "type": "number",
-          "position": 5
+          "position": 7
         },
         {
           "token": "+",
           "type": "operator",
-          "position": 9
+          "position": 13
         },
         {
           "token": ")",
           "type": "parenthesis",
-          "position": 10
+          "position": 14
         }
       ],
-      "resultado": 6.0,
+      "resultado": 64.09,
       "memoria": ""
     },
     {
