@@ -1,5 +1,5 @@
 (42.31 21.78 +)
 (1.0 1.0 +)
-(10.0 dez)
-(200.0 palhaco)
-(palhaco dez +)
+(10.0 DEZ)
+(200.0 PALHACO)
+(PALHACO DEZ +)
