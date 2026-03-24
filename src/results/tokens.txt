@@ -282,7 +282,7 @@
           "position": 26
         }
       ],
-      "resultado": 20.0,
+      "resultado": 4.0,
       "memoria": ""
     },
     {
@@ -441,7 +441,7 @@
           "position": 16
         }
       ],
-      "resultado": 50.0,
+      "resultado": 100.0,
       "memoria": ""
     },
     {
@@ -499,7 +499,7 @@
           "position": 16
         }
       ],
-      "resultado": 50.0,
+      "resultado": 0.0,
       "memoria": ""
     },
     {
@@ -567,7 +567,7 @@
           "position": 22
         }
       ],
-      "resultado": 5.0,
+      "resultado": 0.0,
       "memoria": ""
     },
     {
@@ -625,7 +625,7 @@
           "position": 16
         }
       ],
-      "resultado": 50.0,
+      "resultado": NaN,
       "memoria": ""
     },
     {
@@ -693,7 +693,7 @@
           "position": 22
         }
       ],
-      "resultado": 50.0,
+      "resultado": NaN,
       "memoria": ""
     }
   ]

@@ -3,26 +3,51 @@ import os
 import math
 from utils import ler_json
 
+def _is_zero(x):
+    return x == 0.0
+
 def calcularIEEE754(a, b, operador):
-    #Regra para norma IEEE 754(float 64 bits):
-    
     try:
-        if operador == "+": return a + b
-        if operador == "-": return a - b
-        if operador == "*": return a * b
+        # NaN deve se propagar em operações aritméticas.
+        if math.isnan(a) or math.isnan(b):
+            return float('nan')
+
+        if operador == "+":
+            # (+inf) + (-inf) e (-inf) + (+inf) -> NaN
+            if math.isinf(a) and math.isinf(b) and (a > 0) != (b > 0): return float('nan')
+            return a + b
+        if operador == "-":
+            # (+inf) - (+inf) e (-inf) - (-inf) -> NaN
+            if math.isinf(a) and math.isinf(b) and (a > 0) == (b > 0): return float('nan')
+            return a - b
+        if operador == "*":
+            # (+-inf) * (+-0) -> NaN
+            if (math.isinf(a) and _is_zero(b)) or (math.isinf(b) and _is_zero(a)):return float('nan')
+            return a * b
         if operador == "/":
-            if b == 0.0:
-                if a == 0.0: return float('nan')
+            # (+-inf) / (+-inf) -> NaN
+            if math.isinf(a) and math.isinf(b): return float('nan')
+            if _is_zero(b):
+                # (+-0) / (+-0) -> NaN
+                if _is_zero(a): return float('nan')
+                # (+-!=0) / (+-0) -> +-inf
                 return float('inf') if a > 0 else float('-inf')
             return a / b
-        if operador == "//": return a // b
-        if operador == "%": return a % b
-        if operador == "^": return math.pow(a, b)
-    except OverflowError:
-        # Se o número for grande demais para 64 bits, retorna Infinito
-        return float('inf')
-    except ZeroDivisionError:
-        return float('inf')
+        if operador == "//":
+            return a // b
+        if operador == "%":
+            # resto por zero é indefinido -> NaN
+            if _is_zero(b):return float('nan')
+            # infinito não possui resto definido -> NaN
+            if math.isinf(a): return float('nan')
+            # x % inf = x para x finito
+            if math.isinf(b): return a
+            return a % b
+        if operador == "^":
+            return math.pow(a, b)
+    except OverflowError: return float('inf')
+    except ValueError: return float('nan')
+    except ZeroDivisionError: return float('nan')
     return 0.0
 
 def executarExpressao():
@@ -49,8 +74,9 @@ def executarExpressao():
             elif token == "(":
                 pass
             elif token == ")":
-                if len(pilha) > 1:
-                    pilha = [pilha[0]]
+                pass
+                # if len(pilha) > 1:
+                #     pilha = [pilha[0]]
             elif token == "RES":
                 if len(pilha) >= 1:
                     n = int(pilha.pop())
