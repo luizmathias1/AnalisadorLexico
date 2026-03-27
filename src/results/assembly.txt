@@ -18,19 +18,12 @@ main:
     LDR r0, =num_0
     VLDR s0, [r0]
 
-    // Carrega 2.0
+    // Carrega 5.0
     LDR r0, =num_1
     VLDR s1, [r0]
 
 // -- Operação: + --
     VADD.F32 s0, s0, s1
-
-    // Carrega 4.0
-    LDR r0, =num_2
-    VLDR s1, [r0]
-
-// -- Operação: * --
-    VMUL.F32 s0, s0, s1
 
     // Salva o resultado da expressão da linha 0 no res_array
     LDR r1, =res_array
@@ -61,18 +54,11 @@ main:
     STR r0, [r1]
 
     // Carrega 10.0
-    LDR r0, =num_3
+    LDR r0, =num_2
     VLDR s0, [r0]
 
-    // Carrega 2.0
-    LDR r0, =num_4
-    VLDR s1, [r0]
-
-// -- Operação: / --
-    VDIV.F32 s0, s0, s1
-
-    // Carrega 3.0
-    LDR r0, =num_5
+    // Carrega 4.0
+    LDR r0, =num_3
     VLDR s1, [r0]
 
 // -- Operação: - --
@@ -106,34 +92,16 @@ main:
     LDR r1, =0xFF200000
     STR r0, [r1]
 
-    // Carrega 2.0
-    LDR r0, =num_6
+    // Carrega 6.0
+    LDR r0, =num_4
     VLDR s0, [r0]
 
-    // Carrega 3.0
-    LDR r0, =num_7
+    // Carrega 7.0
+    LDR r0, =num_5
     VLDR s1, [r0]
 
-// -- Operação: ^ --
-    VCVT.S32.F32 s2, s1
-    VMOV r1, s2
-    LDR r2, =num_8
-    VLDR s2, [r2]
-pow_8_loop:
-    CMP r1, #0
-    BLE pow_8_end
-    VMUL.F32 s2, s2, s0
-    SUB r1, r1, #1
-    B pow_8_loop
-pow_8_end:
-    VMOV.F32 s0, s2
-
-    // Carrega 5.0
-    LDR r0, =num_9
-    VLDR s1, [r0]
-
-// -- Operação: + --
-    VADD.F32 s0, s0, s1
+// -- Operação: * --
+    VMUL.F32 s0, s0, s1
 
     // Salva o resultado da expressão da linha 2 no res_array
     LDR r1, =res_array
@@ -163,27 +131,16 @@ pow_8_end:
     LDR r1, =0xFF200000
     STR r0, [r1]
 
-    // Carrega 9.0
-    LDR r0, =num_10
+    // Carrega 15.0
+    LDR r0, =num_6
     VLDR s0, [r0]
 
-    // Carrega 4.0
-    LDR r0, =num_11
-    VLDR s1, [r0]
-
-// -- Operação: - --
-    VSUB.F32 s0, s0, s1
-
     // Carrega 3.0
-    LDR r0, =num_12
+    LDR r0, =num_7
     VLDR s1, [r0]
 
-// -- Operação: % --
-    VDIV.F32 s2, s0, s1
-    VCVT.S32.F32 s2, s2
-    VCVT.F32.S32 s2, s2
-    VMUL.F32 s2, s2, s1
-    VSUB.F32 s0, s0, s2
+// -- Operação: / --
+    VDIV.F32 s0, s0, s1
 
     // Salva o resultado da expressão da linha 3 no res_array
     LDR r1, =res_array
@@ -213,30 +170,20 @@ pow_8_end:
     LDR r1, =0xFF200000
     STR r0, [r1]
 
-    // Carrega 4.0
-    LDR r0, =num_13
+    // Carrega 17.0
+    LDR r0, =num_8
     VLDR s0, [r0]
 
     // Carrega 5.0
-    LDR r0, =num_14
+    LDR r0, =num_9
     VLDR s1, [r0]
 
-// -- Operação: * --
-    VMUL.F32 s0, s0, s1
-
-    // Carrega 2.0
-    LDR r0, =num_15
-    VLDR s1, [r0]
-
-    // Carrega 3.0
-    LDR r0, =num_16
-    VLDR s2, [r0]
-
-// -- Operação: + --
-    VADD.F32 s1, s1, s2
-
-// -- Operação: / --
-    VDIV.F32 s0, s0, s1
+// -- Operação: % --
+    VDIV.F32 s2, s0, s1
+    VCVT.S32.F32 s2, s2
+    VCVT.F32.S32 s2, s2
+    VMUL.F32 s2, s2, s1
+    VSUB.F32 s0, s0, s2
 
     // Salva o resultado da expressão da linha 4 no res_array
     LDR r1, =res_array
@@ -266,41 +213,61 @@ pow_8_end:
     LDR r1, =0xFF200000
     STR r0, [r1]
 
-    // Carrega 3.0
-    LDR r0, =num_17
+    // Carrega 2.0
+    LDR r0, =num_10
     VLDR s0, [r0]
 
-    // Carrega 4.0
-    LDR r0, =num_18
+    // Carrega 10.0
+    LDR r0, =num_11
     VLDR s1, [r0]
-
-// -- Operação: + --
-    VADD.F32 s0, s0, s1
-
-    // Carrega 2.0
-    LDR r0, =num_19
-    VLDR s1, [r0]
-
-    // Carrega 1.0
-    LDR r0, =num_20
-    VLDR s2, [r0]
-
-// -- Operação: - --
-    VSUB.F32 s1, s1, s2
 
 // -- Operação: ^ --
-    VCVT.S32.F32 s2, s1
-    VMOV r1, s2
-    LDR r2, =num_21
-    VLDR s2, [r2]
-pow_21_loop:
+    MOV r3, #0
+    VMOV.F32 s2, s1
+    LDR r2, =num_12
+    VLDR s3, [r2]
+    VCMP.F32 s2, s3
+    VMRS APSR_nzcv, FPSCR
+    BGE pow_12_exp_abs_done
+    MOV r3, #1
+    VNEG.F32 s2, s2
+pow_12_exp_abs_done:
+    VCVT.S32.F32 s1, s2
+    VMOV r1, s1
+    VCVT.F32.S32 s1, s1
+    VSUB.F32 s2, s2, s1
+    LDR r2, =num_12
+    VLDR s1, [r2]
+pow_12_loop:
     CMP r1, #0
-    BLE pow_21_end
-    VMUL.F32 s2, s2, s0
+    BLE pow_12_end
+    VMUL.F32 s1, s1, s0
     SUB r1, r1, #1
-    B pow_21_loop
-pow_21_end:
-    VMOV.F32 s0, s2
+    B pow_12_loop
+pow_12_end:
+    VSQRT.F32 s0, s0
+    MOV r4, #16
+    LDR r2, =num_13
+    VLDR s4, [r2]
+pow_12_frac_loop:
+    CMP r4, #0
+    BLE pow_12_frac_end
+    VMUL.F32 s2, s2, s4
+    VCMP.F32 s2, s3
+    VMRS APSR_nzcv, FPSCR
+    BLT pow_12_frac_skip_mul
+    VMUL.F32 s1, s1, s0
+    VSUB.F32 s2, s2, s3
+pow_12_frac_skip_mul:
+    VSQRT.F32 s0, s0
+    SUB r4, r4, #1
+    B pow_12_frac_loop
+pow_12_frac_end:
+    CMP r3, #0
+    BEQ pow_12_pow_done
+    VDIV.F32 s1, s3, s1
+pow_12_pow_done:
+    VMOV.F32 s0, s1
 
     // Salva o resultado da expressão da linha 5 no res_array
     LDR r1, =res_array
@@ -330,8 +297,8 @@ pow_21_end:
     LDR r1, =0xFF200000
     STR r0, [r1]
 
-    // Carrega 50.0
-    LDR r0, =num_22
+    // Carrega 100.0
+    LDR r0, =num_14
     VLDR s0, [r0]
 
 // -- Comando: Salva em (MEM) --
@@ -370,29 +337,6 @@ pow_21_end:
     LDR r1, =MEM_var
     VLDR s0, [r1]
 
-    // Carrega 1
-    LDR r0, =num_23
-    VLDR s1, [r0]
-
-// -- Comando: (N RES) --
-    VCVT.S32.F32 s1, s1
-    VMOV r1, s1
-    LDR r2, =7
-    SUB r1, r2, r1
-    CMP r1, #0
-    BGE res_ok_7_2
-    LDR r2, =num_24
-    VLDR s1, [r2]
-    B res_end_7_2
-res_ok_7_2:
-    LDR r2, =res_array
-    ADD r2, r2, r1, LSL #2
-    VLDR s1, [r2]
-res_end_7_2:
-
-// -- Operação: + --
-    VADD.F32 s0, s0, s1
-
     // Salva o resultado da expressão da linha 7 no res_array
     LDR r1, =res_array
     LDR r2, =7
@@ -421,8 +365,8 @@ res_end_7_2:
     LDR r1, =0xFF200000
     STR r0, [r1]
 
-    // Carrega 2
-    LDR r0, =num_25
+    // Carrega 1
+    LDR r0, =num_15
     VLDR s0, [r0]
 
 // -- Comando: (N RES) --
@@ -432,7 +376,7 @@ res_end_7_2:
     SUB r1, r2, r1
     CMP r1, #0
     BGE res_ok_8_1
-    LDR r2, =num_26
+    LDR r2, =num_16
     VLDR s0, [r2]
     B res_end_8_1
 res_ok_8_1:
@@ -441,12 +385,12 @@ res_ok_8_1:
     VLDR s0, [r2]
 res_end_8_1:
 
-// -- Comando: Carrega de (MEM) --
-    LDR r1, =MEM_var
-    VLDR s1, [r1]
+    // Carrega 2.0
+    LDR r0, =num_17
+    VLDR s1, [r0]
 
-// -- Operação: - --
-    VSUB.F32 s0, s0, s1
+// -- Operação: + --
+    VADD.F32 s0, s0, s1
 
     // Salva o resultado da expressão da linha 8 no res_array
     LDR r1, =res_array
@@ -476,39 +420,16 @@ res_end_8_1:
     LDR r1, =0xFF200000
     STR r0, [r1]
 
+// -- Comando: Carrega de (MEM) --
+    LDR r1, =MEM_var
+    VLDR s0, [r1]
+
     // Carrega 3.0
-    LDR r0, =num_27
-    VLDR s0, [r0]
-
-    // Carrega 2.0
-    LDR r0, =num_28
+    LDR r0, =num_18
     VLDR s1, [r0]
 
-// -- Operação: + --
-    VADD.F32 s0, s0, s1
-
-    // Carrega 1
-    LDR r0, =num_29
-    VLDR s1, [r0]
-
-// -- Comando: (N RES) --
-    VCVT.S32.F32 s1, s1
-    VMOV r1, s1
-    LDR r2, =9
-    SUB r1, r2, r1
-    CMP r1, #0
-    BGE res_ok_9_2
-    LDR r2, =num_30
-    VLDR s1, [r2]
-    B res_end_9_2
-res_ok_9_2:
-    LDR r2, =res_array
-    ADD r2, r2, r1, LSL #2
-    VLDR s1, [r2]
-res_end_9_2:
-
-// -- Operação: * --
-    VMUL.F32 s0, s0, s1
+// -- Operação: - --
+    VSUB.F32 s0, s0, s1
 
     // Salva o resultado da expressão da linha 9 no res_array
     LDR r1, =res_array
@@ -538,36 +459,32 @@ res_end_9_2:
     LDR r1, =0xFF200000
     STR r0, [r1]
 
-// -- Comando: Carrega de (MEM) --
-    LDR r1, =MEM_var
-    VLDR s0, [r1]
-
     // Carrega 2
-    LDR r0, =num_31
-    VLDR s1, [r0]
+    LDR r0, =num_19
+    VLDR s0, [r0]
 
 // -- Comando: (N RES) --
-    VCVT.S32.F32 s1, s1
-    VMOV r1, s1
+    VCVT.S32.F32 s0, s0
+    VMOV r1, s0
     LDR r2, =10
     SUB r1, r2, r1
     CMP r1, #0
-    BGE res_ok_10_2
-    LDR r2, =num_32
-    VLDR s1, [r2]
-    B res_end_10_2
-res_ok_10_2:
+    BGE res_ok_10_1
+    LDR r2, =num_20
+    VLDR s0, [r2]
+    B res_end_10_1
+res_ok_10_1:
     LDR r2, =res_array
     ADD r2, r2, r1, LSL #2
-    VLDR s1, [r2]
-res_end_10_2:
+    VLDR s0, [r2]
+res_end_10_1:
 
-// -- Operação: % --
-    VDIV.F32 s2, s0, s1
-    VCVT.S32.F32 s2, s2
-    VCVT.F32.S32 s2, s2
-    VMUL.F32 s2, s2, s1
-    VSUB.F32 s0, s0, s2
+    // Carrega 4.0
+    LDR r0, =num_21
+    VLDR s1, [r0]
+
+// -- Operação: * --
+    VMUL.F32 s0, s0, s1
 
     // Salva o resultado da expressão da linha 10 no res_array
     LDR r1, =res_array
@@ -597,54 +514,195 @@ res_end_10_2:
     LDR r1, =0xFF200000
     STR r0, [r1]
 
+// -- Comando: Carrega de (MEM) --
+    LDR r1, =MEM_var
+    VLDR s0, [r1]
+
     // Carrega 1
-    LDR r0, =num_33
+    LDR r0, =num_22
+    VLDR s1, [r0]
+
+// -- Comando: (N RES) --
+    VCVT.S32.F32 s1, s1
+    VMOV r1, s1
+    LDR r2, =11
+    SUB r1, r2, r1
+    CMP r1, #0
+    BGE res_ok_11_2
+    LDR r2, =num_23
+    VLDR s1, [r2]
+    B res_end_11_2
+res_ok_11_2:
+    LDR r2, =res_array
+    ADD r2, r2, r1, LSL #2
+    VLDR s1, [r2]
+res_end_11_2:
+
+// -- Operação: / --
+    VDIV.F32 s0, s0, s1
+
+    // Salva o resultado da expressão da linha 11 no res_array
+    LDR r1, =res_array
+    LDR r2, =11
+    ADD r1, r1, r2, LSL #2
+    VSTR s0, [r1]
+
+// -- Mostrar resultado em binário (pisca MSB/LSB do double) --
+    VCVT.F64.F32 d1, s0
+    VMOV r4, r5, d1
+
+    // Pisca 1: upper 32 bits (MSB)
+    LDR r1, =0xFF200000
+    STR r5, [r1]
+
+    // Apaga
+    MOV r0, #0
+    LDR r1, =0xFF200000
+    STR r0, [r1]
+
+    // Pisca 2: lower 32 bits (LSB)
+    LDR r1, =0xFF200000
+    STR r4, [r1]
+
+    // Apaga
+    MOV r0, #0
+    LDR r1, =0xFF200000
+    STR r0, [r1]
+
+    // Carrega 3
+    LDR r0, =num_24
     VLDR s0, [r0]
 
 // -- Comando: (N RES) --
     VCVT.S32.F32 s0, s0
     VMOV r1, s0
-    LDR r2, =11
+    LDR r2, =12
     SUB r1, r2, r1
     CMP r1, #0
-    BGE res_ok_11_1
-    LDR r2, =num_34
+    BGE res_ok_12_1
+    LDR r2, =num_25
     VLDR s0, [r2]
-    B res_end_11_1
-res_ok_11_1:
+    B res_end_12_1
+res_ok_12_1:
     LDR r2, =res_array
     ADD r2, r2, r1, LSL #2
     VLDR s0, [r2]
-res_end_11_1:
+res_end_12_1:
 
-    // Carrega 2.0
-    LDR r0, =num_35
+    // Carrega 7.0
+    LDR r0, =num_26
     VLDR s1, [r0]
 
-    // Carrega 3.0
-    LDR r0, =num_36
-    VLDR s2, [r0]
+// -- Operação: % --
+    VDIV.F32 s2, s0, s1
+    VCVT.S32.F32 s2, s2
+    VCVT.F32.S32 s2, s2
+    VMUL.F32 s2, s2, s1
+    VSUB.F32 s0, s0, s2
 
-// -- Operação: * --
-    VMUL.F32 s1, s1, s2
+    // Salva o resultado da expressão da linha 12 no res_array
+    LDR r1, =res_array
+    LDR r2, =12
+    ADD r1, r1, r2, LSL #2
+    VSTR s0, [r1]
+
+// -- Mostrar resultado em binário (pisca MSB/LSB do double) --
+    VCVT.F64.F32 d1, s0
+    VMOV r4, r5, d1
+
+    // Pisca 1: upper 32 bits (MSB)
+    LDR r1, =0xFF200000
+    STR r5, [r1]
+
+    // Apaga
+    MOV r0, #0
+    LDR r1, =0xFF200000
+    STR r0, [r1]
+
+    // Pisca 2: lower 32 bits (LSB)
+    LDR r1, =0xFF200000
+    STR r4, [r1]
+
+    // Apaga
+    MOV r0, #0
+    LDR r1, =0xFF200000
+    STR r0, [r1]
+
+    // Carrega 1
+    LDR r0, =num_27
+    VLDR s0, [r0]
+
+// -- Comando: (N RES) --
+    VCVT.S32.F32 s0, s0
+    VMOV r1, s0
+    LDR r2, =13
+    SUB r1, r2, r1
+    CMP r1, #0
+    BGE res_ok_13_1
+    LDR r2, =num_28
+    VLDR s0, [r2]
+    B res_end_13_1
+res_ok_13_1:
+    LDR r2, =res_array
+    ADD r2, r2, r1, LSL #2
+    VLDR s0, [r2]
+res_end_13_1:
+
+    // Carrega 3.0
+    LDR r0, =num_29
+    VLDR s1, [r0]
 
 // -- Operação: ^ --
-    VCVT.S32.F32 s2, s1
-    VMOV r1, s2
-    LDR r2, =num_37
-    VLDR s2, [r2]
-pow_37_loop:
+    MOV r3, #0
+    VMOV.F32 s2, s1
+    LDR r2, =num_30
+    VLDR s3, [r2]
+    VCMP.F32 s2, s3
+    VMRS APSR_nzcv, FPSCR
+    BGE pow_30_exp_abs_done
+    MOV r3, #1
+    VNEG.F32 s2, s2
+pow_30_exp_abs_done:
+    VCVT.S32.F32 s1, s2
+    VMOV r1, s1
+    VCVT.F32.S32 s1, s1
+    VSUB.F32 s2, s2, s1
+    LDR r2, =num_30
+    VLDR s1, [r2]
+pow_30_loop:
     CMP r1, #0
-    BLE pow_37_end
-    VMUL.F32 s2, s2, s0
+    BLE pow_30_end
+    VMUL.F32 s1, s1, s0
     SUB r1, r1, #1
-    B pow_37_loop
-pow_37_end:
-    VMOV.F32 s0, s2
+    B pow_30_loop
+pow_30_end:
+    VSQRT.F32 s0, s0
+    MOV r4, #16
+    LDR r2, =num_31
+    VLDR s4, [r2]
+pow_30_frac_loop:
+    CMP r4, #0
+    BLE pow_30_frac_end
+    VMUL.F32 s2, s2, s4
+    VCMP.F32 s2, s3
+    VMRS APSR_nzcv, FPSCR
+    BLT pow_30_frac_skip_mul
+    VMUL.F32 s1, s1, s0
+    VSUB.F32 s2, s2, s3
+pow_30_frac_skip_mul:
+    VSQRT.F32 s0, s0
+    SUB r4, r4, #1
+    B pow_30_frac_loop
+pow_30_frac_end:
+    CMP r3, #0
+    BEQ pow_30_pow_done
+    VDIV.F32 s1, s3, s1
+pow_30_pow_done:
+    VMOV.F32 s0, s1
 
-    // Salva o resultado da expressão da linha 11 no res_array
+    // Salva o resultado da expressão da linha 13 no res_array
     LDR r1, =res_array
-    LDR r2, =11
+    LDR r2, =13
     ADD r1, r1, r2, LSL #2
     VSTR s0, [r1]
 
@@ -676,82 +734,68 @@ pow_37_end:
 MEM_var:
     .float 0.0
 res_array:
-    .space 48 // Espaço para 12 resultados float
+    .space 56 // Espaço para 14 resultados float
 num_0:
     .float 3.0
 num_1:
-    .float 2.0
+    .float 5.0
 num_2:
-    .float 4.0
-num_3:
     .float 10.0
+num_3:
+    .float 4.0
 num_4:
-    .float 2.0
+    .float 6.0
 num_5:
-    .float 3.0
+    .float 7.0
 num_6:
-    .float 2.0
+    .float 15.0
 num_7:
     .float 3.0
 num_8:
-    .float 1.0
+    .float 17.0
 num_9:
     .float 5.0
 num_10:
-    .float 9.0
+    .float 2.0
 num_11:
-    .float 4.0
+    .float 10.0
 num_12:
-    .float 3.0
+    .float 1.0
 num_13:
-    .float 4.0
+    .float 2.0
 num_14:
-    .float 5.0
+    .float 100.0
 num_15:
-    .float 2.0
+    .float 1
 num_16:
-    .float 3.0
+    .float 0.0
 num_17:
-    .float 3.0
+    .float 2.0
 num_18:
-    .float 4.0
+    .float 3.0
 num_19:
-    .float 2.0
+    .float 2
 num_20:
-    .float 1.0
+    .float 0.0
 num_21:
-    .float 1.0
+    .float 4.0
 num_22:
-    .float 50.0
+    .float 1
 num_23:
-    .float 1
+    .float 0.0
 num_24:
-    .float 0.0
+    .float 3
 num_25:
-    .float 2
+    .float 0.0
 num_26:
-    .float 0.0
+    .float 7.0
 num_27:
-    .float 3.0
+    .float 1
 num_28:
-    .float 2.0
+    .float 0.0
 num_29:
-    .float 1
-num_30:
-    .float 0.0
-num_31:
-    .float 2
-num_32:
-    .float 0.0
-num_33:
-    .float 1
-num_34:
-    .float 0.0
-num_35:
-    .float 2.0
-num_36:
     .float 3.0
-num_37:
+num_30:
     .float 1.0
 num_31:
     .float 2.0
