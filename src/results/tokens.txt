@@ -2,7 +2,7 @@
   "entries": [
     {
       "line_number": 1,
-      "line": "(42.31 21.78 +)",
+      "line": "(2.0 1.7  ^)",
       "tokens": [
         {
           "token": "(",
@@ -10,50 +10,83 @@
           "position": 0
         },
         {
-          "token": "42.31",
+          "token": "2.0",
           "type": "number",
           "position": 1
         },
         {
-          "token": "21.78",
-          "type": "number",
-          "position": 7
-        },
-        {
-          "token": "+",
-          "type": "operator",
-          "position": 13
-        },
-        {
-          "token": ")",
-          "type": "parenthesis",
-          "position": 14
-        }
-      ],
-      "resultado": 64.09,
-      "memoria": ""
-    },
-    {
-      "line_number": 2,
-      "line": "(1.0 1.0 +)",
-      "tokens": [
-        {
-          "token": "(",
-          "type": "parenthesis",
-          "position": 0
-        },
-        {
-          "token": "1.0",
-          "type": "number",
-          "position": 1
-        },
-        {
-          "token": "1.0",
+          "token": "1.7",
           "type": "number",
           "position": 5
         },
         {
-          "token": "+",
+          "token": "^",
+          "type": "operator",
+          "position": 10
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 11
+        }
+      ],
+      "resultado": 3.249009585424942,
+      "memoria": ""
+    },
+    {
+      "line_number": 2,
+      "line": "(2.0 1.7 //)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "2.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "1.7",
+          "type": "number",
+          "position": 5
+        },
+        {
+          "token": "//",
+          "type": "operator",
+          "position": 9
+        },
+        {
+          "token": ")",
+          "type": "parenthesis",
+          "position": 11
+        }
+      ],
+      "resultado": 1.0,
+      "memoria": ""
+    },
+    {
+      "line_number": 3,
+      "line": "(2.0 1.7 %)",
+      "tokens": [
+        {
+          "token": "(",
+          "type": "parenthesis",
+          "position": 0
+        },
+        {
+          "token": "2.0",
+          "type": "number",
+          "position": 1
+        },
+        {
+          "token": "1.7",
+          "type": "number",
+          "position": 5
+        },
+        {
+          "token": "%",
           "type": "operator",
           "position": 9
         },
@@ -63,7 +96,7 @@
           "position": 10
         }
       ],
-      "resultado": 2.0,
+      "resultado": 0.30000000000000004,
       "memoria": ""
     }
   ]

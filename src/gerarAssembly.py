@@ -175,24 +175,77 @@ def gerarAssembly():
                         instrucoes.append(f"    VMUL.F32 s{s_tmp}, s{s_tmp}, s{reg_dir}")
                         instrucoes.append(f"    VSUB.F32 s{reg_esq}, s{reg_esq}, s{s_tmp}")
                     elif valor == '^':
-                        # Potência (assumindo expoente como inteiro >= 0 para simplificar a repetição)
+                        # Potência com suporte a expoente fracionário genérico.
+                        # Estratégia: separa em parte inteira e fracionária e aproxima
+                        # a^frac por decomposição binária da fração com raízes sucessivas.
                         lbl = f"pow_{len(literais)}"
-                        s_tmp = contador_reg
+                        s_frac = contador_reg
+                        s_one = contador_reg + 1
+                        s_two = contador_reg + 2
                         label_1 = f"num_{len(literais)}"
                         literais.append((label_1, "1.0"))
-                        
-                        instrucoes.append(f"    VCVT.S32.F32 s{s_tmp}, s{reg_dir}") # converte expoente para int
-                        instrucoes.append(f"    VMOV r1, s{s_tmp}")                 # r1 = contador do loop (expoente)
+                        label_2 = f"num_{len(literais)}"
+                        literais.append((label_2, "2.0"))
+
+                        # Normaliza expoente: usa valor absoluto para calcular e inverte no final se era negativo.
+                        instrucoes.append(f"    MOV r3, #0")
+                        instrucoes.append(f"    VMOV.F32 s{s_frac}, s{reg_dir}")
                         instrucoes.append(f"    LDR r2, ={label_1}")
-                        instrucoes.append(f"    VLDR s{s_tmp}, [r2]")               # s_tmp = 1.0 (acumulador do resultado)
+                        instrucoes.append(f"    VLDR s{s_one}, [r2]")
+                        instrucoes.append(f"    VCMP.F32 s{s_frac}, s{s_one}")
+                        instrucoes.append(f"    VMRS APSR_nzcv, FPSCR")
+                        instrucoes.append(f"    BGE {lbl}_exp_abs_done")
+                        instrucoes.append(f"    MOV r3, #1")
+                        instrucoes.append(f"    VNEG.F32 s{s_frac}, s{s_frac}")
+                        instrucoes.append(f"{lbl}_exp_abs_done:")
+
+                        # parte inteira
+                        instrucoes.append(f"    VCVT.S32.F32 s{reg_dir}, s{s_frac}")
+                        instrucoes.append(f"    VMOV r1, s{reg_dir}")
+                        instrucoes.append(f"    VCVT.F32.S32 s{reg_dir}, s{reg_dir}")
+
+                        # parte fracionária em s_frac
+                        instrucoes.append(f"    VSUB.F32 s{s_frac}, s{s_frac}, s{reg_dir}")
+
+                        # acumulador começa em 1.0 (s_dir)
+                        instrucoes.append(f"    LDR r2, ={label_1}")
+                        instrucoes.append(f"    VLDR s{reg_dir}, [r2]")
+
+                        # potência inteira
                         instrucoes.append(f"{lbl}_loop:")
                         instrucoes.append(f"    CMP r1, #0")
                         instrucoes.append(f"    BLE {lbl}_end")
-                        instrucoes.append(f"    VMUL.F32 s{s_tmp}, s{s_tmp}, s{reg_esq}")
+                        instrucoes.append(f"    VMUL.F32 s{reg_dir}, s{reg_dir}, s{reg_esq}")
                         instrucoes.append(f"    SUB r1, r1, #1")
                         instrucoes.append(f"    B {lbl}_loop")
                         instrucoes.append(f"{lbl}_end:")
-                        instrucoes.append(f"    VMOV.F32 s{reg_esq}, s{s_tmp}")    # devolve o resultado para reg_esq
+
+                        # potência fracionária: N bits de precisão binária da fração.
+                        instrucoes.append(f"    VSQRT.F32 s{reg_esq}, s{reg_esq}")
+                        instrucoes.append(f"    MOV r4, #16")
+                        instrucoes.append(f"    LDR r2, ={label_2}")
+                        instrucoes.append(f"    VLDR s{s_two}, [r2]")
+                        instrucoes.append(f"{lbl}_frac_loop:")
+                        instrucoes.append(f"    CMP r4, #0")
+                        instrucoes.append(f"    BLE {lbl}_frac_end")
+                        instrucoes.append(f"    VMUL.F32 s{s_frac}, s{s_frac}, s{s_two}")
+                        instrucoes.append(f"    VCMP.F32 s{s_frac}, s{s_one}")
+                        instrucoes.append(f"    VMRS APSR_nzcv, FPSCR")
+                        instrucoes.append(f"    BLT {lbl}_frac_skip_mul")
+                        instrucoes.append(f"    VMUL.F32 s{reg_dir}, s{reg_dir}, s{reg_esq}")
+                        instrucoes.append(f"    VSUB.F32 s{s_frac}, s{s_frac}, s{s_one}")
+                        instrucoes.append(f"{lbl}_frac_skip_mul:")
+                        instrucoes.append(f"    VSQRT.F32 s{reg_esq}, s{reg_esq}")
+                        instrucoes.append(f"    SUB r4, r4, #1")
+                        instrucoes.append(f"    B {lbl}_frac_loop")
+                        instrucoes.append(f"{lbl}_frac_end:")
+
+                        # Se expoente original era negativo: inverte resultado.
+                        instrucoes.append(f"    CMP r3, #0")
+                        instrucoes.append(f"    BEQ {lbl}_pow_done")
+                        instrucoes.append(f"    VDIV.F32 s{reg_dir}, s{s_one}, s{reg_dir}")
+                        instrucoes.append(f"{lbl}_pow_done:")
+                        instrucoes.append(f"    VMOV.F32 s{reg_esq}, s{reg_dir}")    # devolve o resultado para reg_esq
                     
                     # Desempilha 1 registrador (o resultado fica em reg_esq)
                     contador_reg -= 1

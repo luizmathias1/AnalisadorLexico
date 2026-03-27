@@ -14,16 +14,61 @@ main:
     MOV r0, #0x40000000
     VMSR FPEXC, r0
 
-    // Carrega 42.31
+    // Carrega 2.0
     LDR r0, =num_0
     VLDR s0, [r0]
 
-    // Carrega 21.78
+    // Carrega 1.7
     LDR r0, =num_1
     VLDR s1, [r0]
 
-// -- Operação: + --
-    VADD.F32 s0, s0, s1
+// -- Operação: ^ --
+    MOV r3, #0
+    VMOV.F32 s2, s1
+    LDR r2, =num_2
+    VLDR s3, [r2]
+    VCMP.F32 s2, s3
+    VMRS APSR_nzcv, FPSCR
+    BGE pow_2_exp_abs_done
+    MOV r3, #1
+    VNEG.F32 s2, s2
+pow_2_exp_abs_done:
+    VCVT.S32.F32 s1, s2
+    VMOV r1, s1
+    VCVT.F32.S32 s1, s1
+    VSUB.F32 s2, s2, s1
+    LDR r2, =num_2
+    VLDR s1, [r2]
+pow_2_loop:
+    CMP r1, #0
+    BLE pow_2_end
+    VMUL.F32 s1, s1, s0
+    SUB r1, r1, #1
+    B pow_2_loop
+pow_2_end:
+    VSQRT.F32 s0, s0
+    MOV r4, #16
+    LDR r2, =num_3
+    VLDR s4, [r2]
+pow_2_frac_loop:
+    CMP r4, #0
+    BLE pow_2_frac_end
+    VMUL.F32 s2, s2, s4
+    VCMP.F32 s2, s3
+    VMRS APSR_nzcv, FPSCR
+    BLT pow_2_frac_skip_mul
+    VMUL.F32 s1, s1, s0
+    VSUB.F32 s2, s2, s3
+pow_2_frac_skip_mul:
+    VSQRT.F32 s0, s0
+    SUB r4, r4, #1
+    B pow_2_frac_loop
+pow_2_frac_end:
+    CMP r3, #0
+    BEQ pow_2_pow_done
+    VDIV.F32 s1, s3, s1
+pow_2_pow_done:
+    VMOV.F32 s0, s1
 
     // Salva o resultado da expressão da linha 0 no res_array
     LDR r1, =res_array
@@ -162,20 +207,174 @@ main:
     LDR r1, =0xFF200000
     STR r0, [r1]
 
-    // Carrega 1.0
-    LDR r0, =num_2
+    // Carrega 2.0
+    LDR r0, =num_4
     VLDR s0, [r0]
 
-    // Carrega 1.0
-    LDR r0, =num_3
+    // Carrega 1.7
+    LDR r0, =num_5
     VLDR s1, [r0]
 
-// -- Operação: + --
-    VADD.F32 s0, s0, s1
+// -- Operação: // --
+    VDIV.F32 s0, s0, s1
+    VCVT.S32.F32 s0, s0
+    VCVT.F32.S32 s0, s0
 
     // Salva o resultado da expressão da linha 1 no res_array
     LDR r1, =res_array
     LDR r2, =1
+    ADD r1, r1, r2, LSL #2
+    VSTR s0, [r1]
+
+// -- Mostrar resultado float nos 8 displays (valor * 100) --
+
+    // Ex.: 42.31 -> 4231 (com zeros a esquerda nos demais displays)
+    VABS.F32 s20, s0
+    LDR r1, =const_100
+    VLDR s21, [r1]
+    VMUL.F32 s20, s20, s21
+    VCVTR.S32.F32 s20, s20
+    VCVT.F32.S32 s20, s20
+    LDR r1, =const_10
+    VLDR s21, [r1]
+    LDR r3, =seg7_table
+
+    // Display 8
+    VDIV.F32 s22, s20, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s23, s22
+    VMUL.F32 s24, s23, s21
+    VSUB.F32 s24, s20, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r2, s24
+    LDR r2, [r3, r2, LSL #2]
+
+    // Display 7
+    VDIV.F32 s22, s23, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s25, s22
+    VMUL.F32 s24, s25, s21
+    VSUB.F32 s24, s23, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r6, s24
+    LDR r6, [r3, r6, LSL #2]
+
+    // Display 6
+    VDIV.F32 s22, s25, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s26, s22
+    VMUL.F32 s24, s26, s21
+    VSUB.F32 s24, s25, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r7, s24
+    LDR r7, [r3, r7, LSL #2]
+
+    // Display 5
+    VDIV.F32 s22, s26, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s27, s22
+    VMUL.F32 s24, s27, s21
+    VSUB.F32 s24, s26, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r1, s24
+    LDR r1, [r3, r1, LSL #2]
+
+    // Display 4
+    VDIV.F32 s22, s27, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s28, s22
+    VMUL.F32 s24, s28, s21
+    VSUB.F32 s24, s27, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r4, s24
+    LDR r4, [r3, r4, LSL #2]
+
+    // Display 3
+    VDIV.F32 s22, s28, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s29, s22
+    VMUL.F32 s24, s29, s21
+    VSUB.F32 s24, s28, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r5, s24
+    LDR r5, [r3, r5, LSL #2]
+
+    // Display 2
+    VDIV.F32 s22, s29, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s30, s22
+    VMUL.F32 s24, s30, s21
+    VSUB.F32 s24, s29, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r8, s24
+    LDR r8, [r3, r8, LSL #2]
+
+    // Display 1
+    VDIV.F32 s22, s30, s21
+    VCVT.S32.F32 s22, s22
+    VCVT.F32.S32 s31, s22
+    VMUL.F32 s24, s31, s21
+    VSUB.F32 s24, s30, s24
+    VCVT.S32.F32 s24, s24
+    VMOV r9, s24
+    LDR r9, [r3, r9, LSL #2]
+
+    // Empacota HEX3..HEX0
+    ORR r10, r2, r6, LSL #8
+    ORR r10, r10, r7, LSL #16
+    ORR r10, r10, r1, LSL #24
+
+    // Empacota HEX7..HEX4
+    ORR r11, r4, r5, LSL #8
+    ORR r11, r11, r8, LSL #16
+    ORR r11, r11, r9, LSL #24
+
+    // Escreve nos 8 displays
+    LDR r0, =0xFF200020
+    STR r10, [r0]
+    LDR r0, =0xFF200030
+    STR r11, [r0]
+
+// -- Mostrar resultado em binário (pisca MSB/LSB do double) --
+    VCVT.F64.F32 d1, s0
+    VMOV r4, r5, d1
+
+    // Pisca 1: upper 32 bits (MSB)
+    LDR r1, =0xFF200000
+    STR r5, [r1]
+
+    // Apaga
+    MOV r0, #0
+    LDR r1, =0xFF200000
+    STR r0, [r1]
+
+    // Pisca 2: lower 32 bits (LSB)
+    LDR r1, =0xFF200000
+    STR r4, [r1]
+
+    // Apaga
+    MOV r0, #0
+    LDR r1, =0xFF200000
+    STR r0, [r1]
+
+    // Carrega 2.0
+    LDR r0, =num_6
+    VLDR s0, [r0]
+
+    // Carrega 1.7
+    LDR r0, =num_7
+    VLDR s1, [r0]
+
+// -- Operação: % --
+    VDIV.F32 s2, s0, s1
+    VCVT.S32.F32 s2, s2
+    VCVT.F32.S32 s2, s2
+    VMUL.F32 s2, s2, s1
+    VSUB.F32 s0, s0, s2
+
+    // Salva o resultado da expressão da linha 2 no res_array
+    LDR r1, =res_array
+    LDR r2, =2
     ADD r1, r1, r2, LSL #2
     VSTR s0, [r1]
 
@@ -314,15 +513,23 @@ main:
 
 .data
 res_array:
-    .space 8 // Espaço para 2 resultados float
+    .space 12 // Espaço para 3 resultados float
 num_0:
-    .float 42.31
+    .float 2.0
 num_1:
-    .float 21.78
+    .float 1.7
 num_2:
     .float 1.0
 num_3:
-    .float 1.0
+    .float 2.0
+num_4:
+    .float 2.0
+num_5:
+    .float 1.7
+num_6:
+    .float 2.0
+num_7:
+    .float 1.7
 
 const_10:
     .float 10.0
