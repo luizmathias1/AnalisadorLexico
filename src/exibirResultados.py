@@ -29,8 +29,11 @@ def formatarResultado(res):
         return f"{res:.2f}"
 
 def formatarIEEE754(res):
+    # Converte resultado para representação binaria IEEE 754
     bytes_ieee = struct.pack('>d', res)
-    return bytes_ieee.hex().upper()
+    bits = ''.join(f"{byte:08b}" for byte in bytes_ieee)
+    # coloca espaço entre os primeiros 32 bits e os segundos 32 para ser mais facil a leitura
+    return bits[:32] + ' ' + bits[32:]
 
 def colorirExpressao(expressao, tokens):
     cores_pos = {}
